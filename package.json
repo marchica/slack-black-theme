@@ -1,0 +1,29 @@
+{
+  "name": "slack-black-theme",
+  "version": "1.0.0",
+  "description": "A dark theme for Slack based on Visual Studio's dark theme",
+  "main": "custom.css",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marchica/slack-black-theme.git"
+  },
+  "keywords": [
+    "slack",
+    "css",
+    "dark",
+    "theme"
+  ],
+  "author": "marchica",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marchica/slack-black-theme/issues"
+  },
+  "homepage": "https://github.com/marchica/slack-black-theme#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0"
+  }
+}
