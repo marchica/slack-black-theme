@@ -1,8 +1,15 @@
 'use strict';
 
-const gulp = require('gulp');
+const { src, dest, watch, series } = require('gulp');
 const del = require('del');
 const connect = require('gulp-connect');
+
+let config = {
+    paths: {
+        input: './src/*',
+        output: './dist/'
+    }
+};
 
 function server(cb) {
     let cors = function (req, res, next) {
@@ -11,7 +18,7 @@ function server(cb) {
     };
 
     connect.server({
-        root: 'dist',
+        root: config.paths.output,
         middleware: function () {
             return [cors];
           }
@@ -20,18 +27,18 @@ function server(cb) {
 }
 
 function css(cb) {
-    gulp.src('src/*')
-        .pipe(gulp.dest('dist'))
+    src(config.paths.input)
+        .pipe(dest(config.paths.output));
     cb();
 }
 
 function watch(cb) {
-    gulp.watch(['src'], css);
+    watch([config.paths.input], css);
     cb();
 }
 
 function clean() {
-    return del(['dist/']);
+    return del([config.paths.output]);
 }
 
 function build(cb) {
@@ -41,4 +48,4 @@ function build(cb) {
 
 exports.build = build;
 exports.clean = clean;
-exports.default = gulp.series(clean, build, server, watch);
+exports.default = series(clean, build, server, watch);
