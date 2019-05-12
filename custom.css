@@ -16,10 +16,10 @@ limitations under the License.
 
 :root {
    /* Modify these to change your theme colors: */
-   --primary: #09F;
-   --text: #888;
-   --background: #111;
-   --background-elevated: #222;
+   --primary: #55a1e0;
+   --text: #bbc4d4;
+   --background: #1f2123;
+   --background-elevated: #2d2c2c;
 
    /* These should be less important: */
    --background-hover: rgba(255, 255, 255, 0.1);
@@ -1739,3 +1739,7 @@ ts-jumper .p-jumper__help {
 }.p-app_space__header {
     color: var(--text);
 }
+
+.p-message_pane__foreword__description { color: var(--text-special); }
+
+.channel_header_info_item{ color: var(--text); }
