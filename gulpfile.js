@@ -3,7 +3,7 @@
 const { src, dest, watch, series } = require('gulp');
 const del = require('del');
 const connect = require('gulp-connect');
-const exec = require('child_process').exec;
+const shell = require('node-powershell');
 
 let config = {
     paths: {
@@ -28,12 +28,22 @@ function server(cb) {
 }
 
 function startSlack(cb) {
-    //TODO - detect latest version
-    exec('set SLACK_DEVELOPER_MENU=true && %LocalAppData%\\slack\\app-3.4.0\\slack.exe', function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        cb(err);
-    });
+    let ps = new shell({
+        executionPolicy: 'Bypass',
+        noProfile: true
+      });
+      
+      ps.addCommand('. .\\scripts.ps1; StartSlack')
+      ps.invoke()
+      .then(output => {
+        console.log(output);
+        ps.dispose();
+      })
+      .catch(err => {
+        console.log(err);
+        ps.dispose();
+      });
+
     cb();
 }
 
