@@ -15,3 +15,25 @@ function StartSlack {
 
     & $env:LOCALAPPDATA\slack\$latestVersionFolder\slack.exe
 }
+
+function InstallSlackPatch() {
+    $latestVersionFolder = GetLatestSlackVersionFolder
+    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+
+    Copy-Item -Path $slackFolder\index.js -Destination $slackFolder\index.js.bak
+    Copy-Item -Path $slackFolder\ssb-interop.js -Destination $slackFolder\ssb-interop.js.bak
+
+    # TODO - insert patches
+}
+
+function UninstallSlackPatch() {
+    $latestVersionFolder = GetLatestSlackVersionFolder
+    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+
+    if(Test-Path -Path $slackFolder\index.js.bak) {
+        Move-Item -Path $slackFolder\index.js.bak -Destination $slackFolder\index.js -Force
+    }
+    if(Test-Path -Path $slackFolder\ssb-interop.js.bak) {
+        Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
+    }
+}

@@ -31,27 +31,41 @@ function server(cb) {
 
 function startSlack() {
     log.info('Launching Slack');
+    return runPowershellScript('. .\\scripts.ps1; StartSlack', printDevInfo);
+}
+
+function printDevInfo() {
+    log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
+    log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
+}
+
+function installSlackPatch() {
+    log.info('Installing Slack patch');
+    return runPowershellScript('. .\\scripts.ps1; InstallSlackPatch');
+}
+
+function uninstallSlackPatch() {
+    log.info('Uninstalling Slack patch');
+    return runPowershellScript('. .\\scripts.ps1; UninstallSlackPatch');
+}
+
+function runPowershellScript(command, cb) {
     let ps = new shell({
         executionPolicy: 'Bypass',
         noProfile: true
     });
-      
-    ps.addCommand('. .\\scripts.ps1; StartSlack')
+    ps.addCommand(command);
     return ps.invoke()
         .then(output => {
             console.log(output);
-            printDevInfo();
+            if (cb)
+                cb();
             ps.dispose();
         })
         .catch(err => {
             console.log(err);
             ps.dispose();
         });
-}
-
-function printDevInfo() {
-    log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
-    log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
 }
 
 function css() {
@@ -74,4 +88,6 @@ function build() {
 exports.build = build;
 exports.clean = clean;
 exports.startSlack = startSlack;
+exports.installSlackPatch = installSlackPatch;
+exports.uninstallSlackPatch = uninstallSlackPatch;
 exports.default = series(clean, build, server, startSlack, watcher);
