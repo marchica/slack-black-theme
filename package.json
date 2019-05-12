@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/marchica/slack-black-theme#readme",
   "devDependencies": {
+    "del": "^4.1.1",
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0"
   }

@@ -1,15 +1,17 @@
-var gulp = require('gulp');
-var connect = require('gulp-connect');
+'use strict';
+
+const gulp = require('gulp');
+const del = require('del');
+const connect = require('gulp-connect');
 
 function server(cb) {
-    var cors = function (req, res, next) {
+    let cors = function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
-        //res.setHeader('Access-Control-Allow-Headers', 'headers_you_want_to_accept');
         next();
     };
 
     connect.server({
-        root: 'public',
+        root: 'dist',
         middleware: function () {
             return [cors];
           }
@@ -17,15 +19,26 @@ function server(cb) {
     cb();
 }
 
-function clean(cb) {
-    //TODO
+function css(cb) {
+    gulp.src('src/*')
+        .pipe(gulp.dest('dist'))
     cb();
 }
 
+function watch(cb) {
+    gulp.watch(['src'], css);
+    cb();
+}
+
+function clean() {
+    return del(['dist/']);
+}
+
 function build(cb) {
-    //TODO
+    css(cb);
     cb();
 }
 
 exports.build = build;
-exports.default = gulp.series(clean, build, server);
+exports.clean = clean;
+exports.default = gulp.series(clean, build, server, watch);
