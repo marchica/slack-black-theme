@@ -14,7 +14,4 @@ function StartSlack {
     $latestVersionFolder = GetLatestSlackVersionFolder
 
     & $env:LOCALAPPDATA\slack\$latestVersionFolder\slack.exe
-
-    Write-Host "Ctrl-Alt-I to open dev tools"
-    Write-Host "Ctrl-R to refresh"
 }
