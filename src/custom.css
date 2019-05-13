@@ -32,7 +32,7 @@ limitations under the License.
    --text-bright: #888;
    --text-special: var(--primary);
 
-   --scrollbar-background: #000;
+   --scrollbar-background: var(--background);
    --scrollbar-border: var(--primary);
 
    --text-secondary: #4ec9b0;
@@ -407,7 +407,7 @@ ts-message .action_hover_container .btn_msg_action,
 .menu ul li a,
 .btn, .btn_outline, .menu {
   color: var(--text) !important;
-  border-color: border: 1px solid var(--border-dim) !important;
+  border: 1px solid var(--border-dim) !important;
 }
 
 .btn:hover:after {
@@ -641,9 +641,9 @@ ts-mention.ts_tip:hover
    height: 28px;
 }
 
-.rxn[data-emoji]:hover {
-   /*background-color: var(--background-bright) !important;*/
-}
+/* .rxn[data-emoji]:hover {
+   background-color: var(--background-bright) !important;
+} */
 
 .rxn[data-emoji] .emoji_rxn_count {
    font-size: 0.9rem;
@@ -661,11 +661,11 @@ ts-mention.ts_tip:hover
 
 .emoji-sizer {
    /* outline for black-on-transparent emojis */
-   -webkit-filter: drop-shadow( 1px  0 0 var(--background))
-                   drop-shadow(-1px  0 0 var(--background))
-                   drop-shadow(-0  1px 0 var(--background))
-                   drop-shadow( 0 -1px 0 var(--background));
-   margin: 0 !important;
+    filter: drop-shadow( 1px  0 0 var(--background))
+            drop-shadow(-1px  0 0 var(--background))
+            drop-shadow(-0  1px 0 var(--background))
+            drop-shadow( 0 -1px 0 var(--background));
+    margin: 0 !important;
 }
 
 .ts_icon.ts_icon_smile_o {
@@ -705,7 +705,6 @@ ts-mention.ts_tip:hover
 }
 .p-emoji_picker__group_tab .emoji-sizer {
    filter: none;
-   -webkit-filter: none;
 }
 .p-emoji_picker__group_tab:hover .emoji-sizer {
    color: var(--text);
@@ -721,7 +720,7 @@ ts-mention.ts_tip:hover
 }
 
 #emoji_menu a.emoji_grouping_tab .emoji-sizer {
-   -webkit-filter: none;
+   filter: none;
 }
 
 .emoji_menu_ng #emoji_menu_header .emoji_grouping_tab.active {
