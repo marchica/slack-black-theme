@@ -49,6 +49,11 @@ function uninstallSlackPatch() {
     return runPowershellScript('. .\\scripts.ps1; UninstallSlackPatch');
 }
 
+function runPSTests() {
+    log.info('Running PS tests');
+    return runPowershellScript('Invoke-Pester');
+}
+
 function runPowershellScript(command, cb) {
     let ps = new shell({
         executionPolicy: 'Bypass',
@@ -75,6 +80,7 @@ function css() {
 
 function watcher() {
     watch([config.paths.input], css);
+    watch(['./scripts.ps1'], runPSTests);
 }
 
 function clean() {
