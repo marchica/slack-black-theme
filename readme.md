@@ -25,6 +25,8 @@ This project was forked from the work of many others. :pray:
   * Allow Windows users to easily install without having to find and edit files manually
   * Learn about SCSS, PowerShell, Gulp, Markdown, and Git
 
+Check out my [project board](https://github.com/marchica/slack-black-theme/projects/1) to see what's left.
+
 # Development
 
 `git clone` the project and `cd` into it.
