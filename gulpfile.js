@@ -9,7 +9,8 @@ const shell = require('node-powershell');
 
 let config = {
     paths: {
-        input: './src/*',
+        cssFiles: './src/*.css',
+        powerShellFiles: './*.ps1',
         output: './dist/'
     }
 };
@@ -31,7 +32,7 @@ function server(cb) {
 
 function startSlack() {
     log.info('Launching Slack');
-    return runPowershellScript('. .\\scripts.ps1; StartSlack', printDevInfo);
+    return runPowerShellScript('. .\\scripts.ps1; StartSlack', printDevInfo);
 }
 
 function printDevInfo() {
@@ -41,20 +42,39 @@ function printDevInfo() {
 
 function installSlackPatch() {
     log.info('Installing Slack patch');
-    return runPowershellScript('. .\\scripts.ps1; InstallSlackPatch');
+    return runPowerShellScript('. .\\scripts.ps1; InstallSlackPatch');
 }
 
 function uninstallSlackPatch() {
     log.info('Uninstalling Slack patch');
-    return runPowershellScript('. .\\scripts.ps1; UninstallSlackPatch');
+    return runPowerShellScript('. .\\scripts.ps1; UninstallSlackPatch');
 }
 
 function runPSTests() {
-    log.info('Running PS tests');
-    return runPowershellScript('Invoke-Pester');
+    log.info('Running PowerShell tests');
+    return runPowerShellScript('Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TestResult | ConvertTo-Json -Compress', formatPSTestResults);
 }
 
-function runPowershellScript(command, cb) {
+function formatPSTestResults(output) {
+    const tests = JSON.parse(output);
+    
+    const failures = tests.filter(test => !test.Passed);
+    const totalTests = tests.length;
+    const failedTests = failures.length;
+    const passedTests = totalTests - failedTests;
+
+    failures.forEach(test => {
+        log.error(c.bold.red(`Failed test: ${test.Name}`));
+        log.error(test.FailureMessage);
+    });
+
+    log(c.cyan(`${passedTests} of ${totalTests} passed. `) + (failedTests ? c.red(`${failedTests} failed.`) : ''));
+
+    if (totalTests === passedTests)
+        log(c.green('ALL TESTS PASSED!  \\(ᵔᵕᵔ)/'));
+}
+
+function runPowerShellScript(command, cb) {
     let ps = new shell({
         executionPolicy: 'Bypass',
         noProfile: true
@@ -62,25 +82,27 @@ function runPowershellScript(command, cb) {
     ps.addCommand(command);
     return ps.invoke()
         .then(output => {
-            console.log(output);
             if (cb)
-                cb();
-            ps.dispose();
+                cb(output);
+            else if (output) 
+                log(output);
         })
         .catch(err => {
-            console.log(err);
+            log.error(err);
+        })
+        .then(() => {
             ps.dispose();
         });
 }
 
 function css() {
-    return src(config.paths.input)
+    return src(config.paths.cssFiles)
         .pipe(dest(config.paths.output));
 }
 
 function watcher() {
-    watch([config.paths.input], css);
-    watch(['./scripts.ps1'], runPSTests);
+    watch([config.paths.cssFiles], css);
+    watch([config.paths.powerShellFiles], runPSTests);
 }
 
 function clean() {
@@ -96,4 +118,5 @@ exports.clean = clean;
 exports.startSlack = startSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
+exports.runTests = runPSTests;
 exports.default = series(clean, build, server, startSlack, watcher);
