@@ -1,25 +1,17 @@
 function GetLatestSlackVersionFolder {
-    $versions = 
-        { [int]($_.Name -replace '.*?-(\d+)\.(\d+)\.(\d+)', '$1') }, 
-        { [int]($_.Name -replace '.*?-(\d+)\.(\d+)\.(\d+)', '$2') }, 
-        { [int]($_.Name -replace '.*?-(\d+)\.(\d+)\.(\d+)', '$3') }
-
-    $latestVersionFolder = Get-ChildItem $env:LOCALAPPDATA\slack\app-* | Sort-Object $versions -Descending | Select-Object -First 1 -ExpandProperty Name
+    $latestVersionFolder = $filename = cmd /c "dir C:\Users\chatcher\AppData\Local\slack\app* /ad /on /b" | select -last 1
     return $latestVersionFolder
 }
+$global:latestVersionFolder = GetLatestSlackVersionFolder
 
 function StartSlack {
     [System.Environment]::SetEnvironmentVariable('SLACK_DEVELOPER_MENU', 'true', 'Process')
-
-    $latestVersionFolder = GetLatestSlackVersionFolder
-
-    & $env:LOCALAPPDATA\slack\$latestVersionFolder\slack.exe
+    & $env:LOCALAPPDATA\slack\$global:latestVersionFolder\slack.exe
 }
 
 function InstallSlackPatch([switch] $DevMode = $false) {
     # Find correct Slack folder
-    $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+    $slackFolder = "$env:LOCALAPPDATA\slack\$global:latestVersionFolder\resources\app.asar.unpacked\src\static"
 
     $slackFile = Join-Path $slackFolder ssb-interop.js
 
@@ -67,8 +59,7 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 }
 
 function UninstallSlackPatch() {
-    $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+    $slackFolder = "$env:LOCALAPPDATA\slack\$global:latestVersionFolder\resources\app.asar.unpacked\src\static"
 
     if(Test-Path -Path $slackFolder\ssb-interop.js.bak) {
         Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
