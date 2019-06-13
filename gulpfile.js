@@ -42,7 +42,7 @@ function printDevInfo() {
 
 function installSlackPatch() {
     log.info('Installing Slack patch');
-    return runPowerShellScript('. .\\scripts.ps1; InstallSlackPatch');
+    return runPowerShellScript('. .\\scripts.ps1; InstallSlackPatch -DevMode');
 }
 
 function uninstallSlackPatch() {
@@ -56,8 +56,11 @@ function runPSTests() {
 }
 
 function formatPSTestResults(output) {
-    const tests = JSON.parse(output);
+    let tests = JSON.parse(output);
     
+    if (!Array.isArray(tests))
+        tests = new Array(tests);
+
     const failures = tests.filter(test => !test.Passed);
     const totalTests = tests.length;
     const failedTests = failures.length;

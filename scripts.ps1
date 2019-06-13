@@ -16,14 +16,24 @@ function StartSlack {
     & $env:LOCALAPPDATA\slack\$latestVersionFolder\slack.exe
 }
 
-function InstallSlackPatch() {
+function InstallSlackPatch([switch] $DevMode = $false) {
+    # Find correct Slack folder
     $latestVersionFolder = GetLatestSlackVersionFolder
     $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
 
+    # Backup original files
     Copy-Item -Path $slackFolder\index.js -Destination $slackFolder\index.js.bak
     Copy-Item -Path $slackFolder\ssb-interop.js -Destination $slackFolder\ssb-interop.js.bak
 
     # TODO - insert patches
+    # Check if files have already been patched
+
+    # Read patch into memory
+
+    # Replace URL
+    #http://127.0.0.1:8080/custom.css
+    #URL_TO_CSS
+
 }
 
 function UninstallSlackPatch() {

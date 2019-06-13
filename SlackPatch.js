@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let webviews = document.querySelectorAll(".TeamView webview");
  
     // Fetch our CSS in parallel ahead of time
-    const cssPath = 'http://127.0.0.1:8080/custom.css';
+    const cssPath = 'URL_TO_CSS';
     let cssPromise = fetch(cssPath + '?zz=' + Date.now(), {cache: "no-store"}).then(response => response.text());
  
     let customCustomCSS = `
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
  });
  
- const cssPath = 'http://127.0.0.1:8080/custom.css';
+ const cssPath = 'URL_TO_CSS';
  const localCssPath = 'C:\\Users\\Marcy\\Code\\slack\\slack-black-theme\\custom.css';
  
  window.reloadCss = function() {
