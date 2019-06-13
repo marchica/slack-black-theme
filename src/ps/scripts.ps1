@@ -17,6 +17,7 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 
     # Backup original files
     if ((Test-Path -Path "$slackFile.bak") -eq $False) {
+        Copy-Item -Path $slackFile -Destination "$slackFile.bak"	
     }
 
     # Read slack file into memory
