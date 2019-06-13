@@ -19,7 +19,7 @@ function StartSlack {
 function InstallSlackPatch([switch] $DevMode = $false) {
     # Find correct Slack folder
     $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = Join-Path $env:LOCALAPPDATA slack $latestVersionFolder resources\app.asar.unpacked\src\static
+    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
 
     $slackFile = Join-Path $slackFolder ssb-interop.js
 
@@ -68,7 +68,7 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 
 function UninstallSlackPatch() {
     $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = Join-Path $env:LOCALAPPDATA slack $latestVersionFolder resources\app.asar.unpacked\src\static
+    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
 
     if(Test-Path -Path $slackFolder\ssb-interop.js.bak) {
         Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
