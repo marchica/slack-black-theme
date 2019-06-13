@@ -43,11 +43,13 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 
     # Read patch into memory and replace URL
     $urlPlaceholder = "URL_TO_CSS"
-    $url = "http://127.0.0.1:8080/custom.css"
+    if ($DevMode) {
+        $url = "http://127.0.0.1:8080/custom.css"
+    } else {
+        $url = "https://raw.githubusercontent.com/marchica/slack-black-theme/master/dist/custom.css";
+    }
 
-    # TODO - need to get from URL!!
-
-    $patchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\src\js\SlackPatch.js").Replace($urlPlaceholder, $url)
+    $patchContents = (Invoke-WebRequest "https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/SlackPatch.js" -UseBasicParsing).Content.Replace($urlPlaceholder, $url)
 
     # Add patch to end of slack file
     Add-Content -Path $slackFile -Value $patchContents
@@ -57,9 +59,7 @@ function InstallSlackPatch([switch] $DevMode = $false) {
         $pathPlaceholder = "PATH_TO_LOCAL_CSS"
         $path = (Join-Path (Resolve-Path $PSScriptRoot\..\..) dist\custom.css).Replace('\', '\\')
 
-        # TODO - need to get from URL!!
-
-        $devPatchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\src\js\DevSlackPatch.js").Replace($pathPlaceholder, $path)
+        $devPatchContents = (Invoke-WebRequest "https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/DevSlackPatch.js" -UseBasicParsing).Content.Replace($pathPlaceholder, $path)
 
         # Add patch to end of slack file
         Add-Content -Path $slackFile -Value $devPatchContents
