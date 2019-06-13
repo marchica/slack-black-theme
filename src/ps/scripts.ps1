@@ -1,5 +1,5 @@
 function GetLatestSlackVersionFolder {
-    $latestVersionFolder = $filename = cmd /c "dir C:\Users\chatcher\AppData\Local\slack\app* /ad /on /b" | select -last 1
+    $latestVersionFolder = $filename = cmd /c "dir $env:LOCALAPPDATA\slack\app* /ad /on /b" | select -last 1
     return $latestVersionFolder
 }
 $global:latestVersionFolder = GetLatestSlackVersionFolder
