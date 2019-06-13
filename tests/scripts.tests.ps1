@@ -4,8 +4,8 @@ Describe 'Slack Scripts' {
     
     Context 'Test' { 
 
-        It 'Should return 3.4.0' {
-            GetLatestSlackVersionFolder | Should be 'app-3.4.0'
+        It 'Should return 3.4.2' {
+            GetLatestSlackVersionFolder | Should be 'app-3.4.2'
         }
 
     }

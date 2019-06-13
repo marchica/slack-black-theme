@@ -19,30 +19,49 @@ function StartSlack {
 function InstallSlackPatch([switch] $DevMode = $false) {
     # Find correct Slack folder
     $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+    $slackFolder = Join-Path $env:LOCALAPPDATA slack $latestVersionFolder resources\app.asar.unpacked\src\static
+
+    # TODO - only patch one file?
+    $slackFile = Join-Path $slackFolder ssb-interop.js
 
     # Backup original files
-    Copy-Item -Path $slackFolder\index.js -Destination $slackFolder\index.js.bak
-    Copy-Item -Path $slackFolder\ssb-interop.js -Destination $slackFolder\ssb-interop.js.bak
+    #Copy-Item -Path $slackFolder\index.js -Destination $slackFolder\index.js.bak
+    if ((Test-Path -Path "$slackFile.bak") -eq $False) {
+        Copy-Item -Path $slackFile -Destination "$slackFile.bak"
+    }
 
-    # TODO - insert patches
+    # Read slack file into memory
+    $fileContents = Get-Content $slackFile
+
     # Check if files have already been patched
+    $patchIdentifier = "//Patch from https://github.com/marchica/slack-black-theme"
 
-    # Read patch into memory
+    if ($fileContents | Select-String -Pattern $patchIdentifier -SimpleMatch -Quiet) {
+        Write-Host "Already patched!"
+        exit
+    }
 
-    # Replace URL
-    #http://127.0.0.1:8080/custom.css
-    #URL_TO_CSS
+    Write-Host "Patching $slackFile..."
 
+    # Read patch into memory and replace URL
+    $urlPlaceholder = "URL_TO_CSS"
+    $url = "http://127.0.0.1:8080/custom.css"
+
+    # TODO - need to get from URL!!
+
+    $patchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\SlackPatch.js").Replace($urlPlaceholder, $url)
+
+    # Add patch to end of slack file
+    Add-Content -Path $slackFile -Value $patchContents
 }
 
 function UninstallSlackPatch() {
     $latestVersionFolder = GetLatestSlackVersionFolder
     $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
 
-    if(Test-Path -Path $slackFolder\index.js.bak) {
-        Move-Item -Path $slackFolder\index.js.bak -Destination $slackFolder\index.js -Force
-    }
+    # if(Test-Path -Path $slackFolder\index.js.bak) {
+    #     Move-Item -Path $slackFolder\index.js.bak -Destination $slackFolder\index.js -Force
+    # }
     if(Test-Path -Path $slackFolder\ssb-interop.js.bak) {
         Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
     }
