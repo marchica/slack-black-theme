@@ -1,8 +1,10 @@
 
+
 //Patch from https://github.com/marchica/slack-black-theme
 
-document.addEventListener("DOMContentLoaded", function () {
-   const cssPath = 'URL_TO_CSS';
+const cssPath = 'URL_TO_CSS';
+
+document.addEventListener("DOMContentLoaded", function () {   
    let customCustomCSS = `
         :root {
             /* Modify these to change your theme colors: */
@@ -21,10 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     `
 
-   fetch(cssPath).then(response => response.text()).then(css => {
-      let s = document.createElement('style');
-      s.type = 'text/css';
-      s.innerHTML = css + customCustomCSS;
-      document.head.appendChild(s);
-   });
+   fetch(cssPath).then(response => response.text())
+      .then(css => {
+         let s = document.createElement('style');
+         s.id = 'slack-custom-css';
+         s.type = 'text/css';
+         s.innerHTML = css + customCustomCSS;
+         document.head.appendChild(s);
+      });
 });

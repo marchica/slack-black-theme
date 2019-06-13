@@ -21,11 +21,9 @@ function InstallSlackPatch([switch] $DevMode = $false) {
     $latestVersionFolder = GetLatestSlackVersionFolder
     $slackFolder = Join-Path $env:LOCALAPPDATA slack $latestVersionFolder resources\app.asar.unpacked\src\static
 
-    # TODO - only patch one file?
     $slackFile = Join-Path $slackFolder ssb-interop.js
 
     # Backup original files
-    #Copy-Item -Path $slackFolder\index.js -Destination $slackFolder\index.js.bak
     if ((Test-Path -Path "$slackFile.bak") -eq $False) {
         Copy-Item -Path $slackFile -Destination "$slackFile.bak"
     }
@@ -53,15 +51,26 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 
     # Add patch to end of slack file
     Add-Content -Path $slackFile -Value $patchContents
+
+    # If dev mode, add dev patch to auto-reload CSS
+    if ($DevMode) {
+        $pathPlaceholder = "PATH_TO_LOCAL_CSS"
+        # TODO - make this dynamic
+        $path = "C:\\Users\\Marcy\\Code\\slack\\slack-black-theme\\dist\\custom.css"
+
+        # TODO - need to get from URL!!
+
+        $devPatchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\DevSlackPatch.js").Replace($pathPlaceholder, $path)
+
+        # Add patch to end of slack file
+        Add-Content -Path $slackFile -Value $devPatchContents
+    }
 }
 
 function UninstallSlackPatch() {
     $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+    $slackFolder = Join-Path $env:LOCALAPPDATA slack $latestVersionFolder resources\app.asar.unpacked\src\static
 
-    # if(Test-Path -Path $slackFolder\index.js.bak) {
-    #     Move-Item -Path $slackFolder\index.js.bak -Destination $slackFolder\index.js -Force
-    # }
     if(Test-Path -Path $slackFolder\ssb-interop.js.bak) {
         Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
     }
