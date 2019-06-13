@@ -1,4 +1,4 @@
-Import-Module -Force $PSScriptRoot\..\scripts.ps1
+Import-Module -Force $PSScriptRoot\scripts.ps1
 
 Describe 'Slack Scripts' {
     

@@ -9,8 +9,9 @@ const shell = require('node-powershell');
 
 let config = {
     paths: {
-        cssFiles: './src/*.css',
-        powerShellFiles: './*.ps1',
+        cssFiles: './src/css/*.css',
+        powerShellFiles: './src/ps/*.ps1',
+        powerShellScript: '.\\src\\ps\\scripts.ps1',
         output: './dist/'
     }
 };
@@ -32,7 +33,7 @@ function server(cb) {
 
 function startSlack() {
     log.info('Launching Slack');
-    return runPowerShellScript('. .\\scripts.ps1; StartSlack', printDevInfo);
+    return runPowerShellScript(`. ${config.paths.powerShellScript}; StartSlack`, printDevInfo);
 }
 
 function printDevInfo() {
@@ -42,12 +43,12 @@ function printDevInfo() {
 
 function installSlackPatch() {
     log.info('Installing Slack patch');
-    return runPowerShellScript('. .\\scripts.ps1; InstallSlackPatch -DevMode');
+    return runPowerShellScript(`. ${config.paths.powerShellScript}; InstallSlackPatch -DevMode`);
 }
 
 function uninstallSlackPatch() {
     log.info('Uninstalling Slack patch');
-    return runPowerShellScript('. .\\scripts.ps1; UninstallSlackPatch');
+    return runPowerShellScript(`. ${config.paths.powerShellScript}; UninstallSlackPatch`);
 }
 
 function runPSTests() {

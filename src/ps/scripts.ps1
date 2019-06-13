@@ -47,7 +47,7 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 
     # TODO - need to get from URL!!
 
-    $patchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\SlackPatch.js").Replace($urlPlaceholder, $url)
+    $patchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\src\js\SlackPatch.js").Replace($urlPlaceholder, $url)
 
     # Add patch to end of slack file
     Add-Content -Path $slackFile -Value $patchContents
@@ -55,12 +55,11 @@ function InstallSlackPatch([switch] $DevMode = $false) {
     # If dev mode, add dev patch to auto-reload CSS
     if ($DevMode) {
         $pathPlaceholder = "PATH_TO_LOCAL_CSS"
-        # TODO - make this dynamic
-        $path = "C:\\Users\\Marcy\\Code\\slack\\slack-black-theme\\dist\\custom.css"
+        $path = (Join-Path (Resolve-Path $PSScriptRoot\..\..) dist\custom.css).Replace('\', '\\')
 
         # TODO - need to get from URL!!
 
-        $devPatchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\DevSlackPatch.js").Replace($pathPlaceholder, $path)
+        $devPatchContents = (Get-Content "C:\Users\Marcy\Code\slack\slack-black-theme\src\js\DevSlackPatch.js").Replace($pathPlaceholder, $path)
 
         # Add patch to end of slack file
         Add-Content -Path $slackFile -Value $devPatchContents
