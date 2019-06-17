@@ -91,5 +91,3 @@ function UninstallSlackPatch() {
         Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
     }
 }
-
-StartSlack
