@@ -1603,12 +1603,11 @@ nav {
 
 /* message thumbs up */
 .c-reaction {
-		font-size: 32px;
     background: var(--background);
     border: 1px solid var(--border-dim); 	
 }
 .emoji-sizer {
-	font-size: 32px;
+	font-size: 26px;
 }
 .c-reaction--reacted:hover {
     background: var(--background-elevated);
