@@ -1,3 +1,20 @@
+function Get-ManuallyDownloadedSlackFolder {
+    $latestVersionFolder = GetLatestSlackVersionFolder
+    return "$env:LOCALAPPDATA\slack\$latestVersionFolder"
+}
+
+function Get-SlackFolder {
+    if (Test-Path "$env:LOCALAPPDATA\slack\slack.exe") {
+        return Get-ManuallyDownloadedSlackFolder
+    }
+
+    if (Test-Path "$env:ProgramFiles\slack\slack.exe") {
+        return "$env:ProgramFiles\slack"
+    }
+
+    # TODO: Windows Store slack folder path
+}
+
 function GetLatestSlackVersionFolder {
     $versions = 
         { [int]($_.Name -replace '.*?-(\d+)\.(\d+)\.(\d+)', '$1') }, 
@@ -11,15 +28,15 @@ function GetLatestSlackVersionFolder {
 function StartSlack {
     [System.Environment]::SetEnvironmentVariable('SLACK_DEVELOPER_MENU', 'true', 'Process')
 
-    $latestVersionFolder = GetLatestSlackVersionFolder
+    $slackFolder = Get-SlackFolder
 
-    & $env:LOCALAPPDATA\slack\$latestVersionFolder\slack.exe
+    & $slackFolder\slack.exe
 }
 
 function InstallSlackPatch([switch] $DevMode = $false) {
     # Find correct Slack folder
-    $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+    $slackFolder = Get-SlackFolder
+    $slackFolder = "$slackFolder\resources\app.asar.unpacked\src\static"
 
     $slackFile = Join-Path $slackFolder ssb-interop.js
 
@@ -67,10 +84,12 @@ function InstallSlackPatch([switch] $DevMode = $false) {
 }
 
 function UninstallSlackPatch() {
-    $latestVersionFolder = GetLatestSlackVersionFolder
-    $slackFolder = "$env:LOCALAPPDATA\slack\$latestVersionFolder\resources\app.asar.unpacked\src\static"
+    $slackFolder = Get-SlackFolder
+    $slackFolder = "$slackFolder\resources\app.asar.unpacked\src\static"
 
     if(Test-Path -Path $slackFolder\ssb-interop.js.bak) {
         Move-Item -Path $slackFolder\ssb-interop.js.bak -Destination $slackFolder\ssb-interop.js -Force
     }
 }
+
+StartSlack
