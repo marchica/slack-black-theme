@@ -1606,8 +1606,8 @@ nav {
     background: var(--background);
     border: 1px solid var(--border-dim); 	
 }
-.emoji-sizer {
-	font-size: 26px;
+.c-reaction .emoji-sizer {
+	font-size: 22px;
 }
 .c-reaction--reacted:hover {
     background: var(--background-elevated);
