@@ -6,7 +6,7 @@ A dark [Slack](https://slack.com/) theme based on Visual Studio's dark theme tha
 
 # Install
 
-On Windows, open a command prompt and run this command:
+No need for downloading or editing files by hand! On Windows with Slack already installed, open a command prompt and run this command:
 
 ```batch
 PowerShell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-Expression "$(Invoke-WebRequest https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/ps/scripts.ps1 -UseBasicParsing); InstallSlackPatch""
