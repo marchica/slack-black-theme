@@ -1604,11 +1604,11 @@ nav {
 /* message thumbs up */
 .c-reaction {
     background: var(--background);
-    border: 1px solid var(--border-dim); 	
+    box-shadow: 0 0 0 1px var(--border-dim);
 }
 .c-reaction .emoji-sizer.emoji, 
 .c-reaction .emoji-sizer.emoji-outer{
-	font-size: 22px;
+	font-size: 20px;
 }
 .c-reaction--reacted:hover {
     background: var(--background-elevated);
@@ -1620,7 +1620,13 @@ nav {
     background: var(--background-hover);
 }
 .c-reaction__count {
-	color: var(--text-bright);
+    color: var(--text-bright);
+    font-size: 14px;
+}
+
+.c-reaction--reacted .c-reaction__count {
+    color: var(--text-special);
+    font-weight: 705;
 }
 
 /* tooltips */
