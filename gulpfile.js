@@ -32,8 +32,8 @@ function server(cb) {
 }
 
 function startSlack() {
-    log.info('Launching Slack');
-    return runPowerShellScript(`. ${config.paths.powerShellScript}; StartSlack`, printDevInfo);
+    log.info('Launching Slack in developer mode');
+    return runPowerShellScript(`. ${config.paths.powerShellScript}; Invoke-SlackDevMode`, printDevInfo);
 }
 
 function printDevInfo() {
@@ -43,12 +43,12 @@ function printDevInfo() {
 
 function installSlackPatch() {
     log.info('Installing Slack patch');
-    return runPowerShellScript(`. ${config.paths.powerShellScript}; InstallSlackPatch -DevMode`);
+    return runPowerShellScript(`. ${config.paths.powerShellScript}; Install-SlackPatch -DevMode`);
 }
 
 function uninstallSlackPatch() {
     log.info('Uninstalling Slack patch');
-    return runPowerShellScript(`. ${config.paths.powerShellScript}; UninstallSlackPatch`);
+    return runPowerShellScript(`. ${config.paths.powerShellScript}; Uninstall-SlackPatch`);
 }
 
 function runPSTests() {
