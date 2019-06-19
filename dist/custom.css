@@ -1606,6 +1606,10 @@ nav {
     background: var(--background);
     border: 1px solid var(--border-dim); 	
 }
+.c-reaction .emoji-sizer.emoji, 
+.c-reaction .emoji-sizer.emoji-outer{
+	font-size: 22px;
+}
 .c-reaction--reacted:hover {
     background: var(--background-elevated);
 }
