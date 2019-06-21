@@ -1,6 +1,6 @@
 'use strict';
 
-const { src, dest, watch, series } = require('gulp');
+const { src, dest, watch, series, parallel } = require('gulp');
 const c = require('ansi-colors');
 const connect = require('gulp-connect');
 const del = require('del');
@@ -49,6 +49,17 @@ function installSlackPatch() {
 function uninstallSlackPatch() {
     log.info('Uninstalling Slack patch');
     return runPowerShellScript(`. ${config.paths.powerShellScript}; Uninstall-SlackPatch`);
+}
+
+function runPSScriptAnalyzer() {
+    log.info('Running PSScriptAnalyzer');
+    // If this is throwing an error, make sure it's installed: Install-Module -Name PSScriptAnalyzer
+    return runPowerShellScript(`Invoke-ScriptAnalyzer -Path ${config.paths.powerShellFiles}`, formatPSScriptAnalyzerResults);
+}
+
+function formatPSScriptAnalyzerResults(output) {
+    if (output)
+        log.error(c.bold.red(output));
 }
 
 function runPSTests() {
@@ -106,7 +117,7 @@ function css() {
 
 function watcher() {
     watch([config.paths.cssFiles], css);
-    watch([config.paths.powerShellFiles], runPSTests);
+    watch([config.paths.powerShellFiles], parallel(runPSScriptAnalyzer, runPSTests));
 }
 
 function clean() {
@@ -122,5 +133,6 @@ exports.clean = clean;
 exports.startSlack = startSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
+exports.runPSScriptAnalyzer = runPSScriptAnalyzer;
 exports.runTests = runPSTests;
 exports.default = series(clean, build, server, startSlack, watcher);
