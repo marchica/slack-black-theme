@@ -36,6 +36,7 @@ limitations under the License.
    --scrollbar-border: var(--primary);
 
    --text-secondary: #4ec9b0;
+   --hightlight: #5a375f;
 }
 
 h1, h2, h3, h4 {
@@ -442,6 +443,10 @@ ts-message .action_hover_container .btn_msg_action,
 
 .search_result_with_extract {
   box-shadow: 0 1px 10px var(--background-elevated) !important;
+}
+
+.c-react_search_input:hover .icon_search_wrapper *,.c-react_search_input:hover .search_input_wrapper * {
+    color: var(--text-special) !important;
 }
 
 .ql-placeholder {
@@ -1595,7 +1600,7 @@ nav {
 	color: var(--text);	
 }
 .c-mrkdwn__broadcast--mention, .c-mrkdwn__broadcast--mention:hover, .c-mrkdwn__highlight, .c-mrkdwn__mention, .c-mrkdwn__mention:hover, .c-mrkdwn__user_group--mention, .c-mrkdwn__user_group--mention:hover {
-    background: var(--background-elevated);
+    background: var(--hightlight);
 }
 .c-member_slug--mention, .c-member_slug--mention:hover {
     background: var(--background-hover);
@@ -1667,6 +1672,13 @@ ts-jumper .p-jumper__help {
 .c-menu.p-emoji_picker, .c-menu.p-emoji_picker div, .c-menu.p-emoji_picker h3 {
     background: var(--background);
 }
+
+/* Emoji picker - skintone button */
+.p-emoji_picker__skintone_btn_container, .p-emoji_picker__skintone_btn_container div, .p-emoji_picker__skintone_btn_container:hover {
+    background: var(--background-hover) !important;
+    border: none;
+}
+
 .p-emoji_picker__group_tab--active {
     background: var(--background-elevated);
 }
@@ -1756,3 +1768,18 @@ ts-jumper .p-jumper__help {
 .p-message_pane__banner { background-color: var(--primary); }
 
 .p-channel_sidebar__jumper { background-color: var(--background) !important; }
+
+/* Preferences sidebar */
+.c-sidebar_menu__list_item { color: var(--text) !important; }
+
+/* Preferences radio select fields */
+.p-prefs_modal__radiogroup label.p-prefs_modal__radiogroup--selected { background: var(--background-hover) }
+
+/* Preferences dropdowns */
+.c-basic-select { color: black; }
+
+/* Presence icon - available */
+.p-channel_sidebar__close_container .p-channel_sidebar__channel--im .c-presence--active,
+.p-channel_sidebar__close_container .p-channel_sidebar__channel--im-slackbot:before,
+#team_menu #presence_container #presence.active:before { color: #64e88e; }
+
