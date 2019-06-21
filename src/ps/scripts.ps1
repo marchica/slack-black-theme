@@ -67,8 +67,8 @@ function Install-SlackPatch([switch] $DevMode = $false) {
     $patchIdentifier = '//Patch from https://github.com/marchica/slack-black-theme'
 
     if ($fileContents | Select-String -Pattern $patchIdentifier -SimpleMatch -Quiet) {
-        Write-Output 'Already patched!'
-        return
+        Write-Output 'Already patched! Will re-apply...'
+        Copy-Item -Path "$slackFile.bak" -Destination $slackFile
     }
 
     Write-Output "Patching file: $slackFile"
@@ -97,7 +97,8 @@ function Install-SlackPatch([switch] $DevMode = $false) {
         Add-Content -Path $slackFile -Value $devPatchContents
     }
 
-    Write-Output 'Successfully patched!  ** Ctrl-R in Slack to refresh **'
+    Write-Output 'Successfully patched!'
+    Write-Output '** Ctrl-R in Slack to refresh **'
 }
 
 function Uninstall-SlackPatch() {
