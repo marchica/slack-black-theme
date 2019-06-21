@@ -40,6 +40,8 @@ Check out my [project board](https://github.com/marchica/slack-black-theme/proje
 
 `git clone` the project and `cd` into it.
 
-Run `npm i` and then run `gulp` which will start a dev server and launch Slack in dev mode!
+At a PowerShell prompt run `. .\src\ps\scripts.ps1; Install-SlackPatch -DevMode` to patch Slack for development.
 
-Write some code and then send me a pull request!
+Run `npm i` for the initial install and then run `gulp` which will start a dev server, launch Slack in dev mode, and watch the files to rebuild and run unit tests.
+
+Write some code and then send me a pull request to the dev branch!
