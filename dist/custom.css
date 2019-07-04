@@ -1810,18 +1810,23 @@ ts-jumper .p-jumper__help {
     background: var(--scrollbar-background);
 }
 
-.p-message_pane__foreword__description { color: var(--text-special); }
+/* message initial description */
+.p-message_pane__foreword__description { color: var(--text-bright); }
 
-.channel_header_info_item{ color: var(--text); }
+/* channel description */
+.channel_header_info_item{ color: var(--text-bright); }
 
-.p-message_pane__banner { background-color: var(--primary); }
+/* top bar unread message banner */
+.p-message_pane__banner { background-color: var(--highlight); }
 
+/* sidebarjump to button */
 .p-channel_sidebar__jumper { background-color: var(--background) !important; }
 
-/* Preferences sidebar */
+/* preferences sidebar menu */
 .c-sidebar_menu__list_item { color: var(--text) !important; }
 
-/* Presence icon - available */
+/* presence icon - available */
 .p-channel_sidebar__close_container .p-channel_sidebar__channel--im .c-presence--active,
 .p-channel_sidebar__close_container .p-channel_sidebar__channel--im-slackbot:before,
+.c-unified_member .presence.active,
 #team_menu #presence_container #presence.active:before { color: #64e88e; }
