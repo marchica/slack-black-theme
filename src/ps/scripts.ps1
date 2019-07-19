@@ -26,7 +26,7 @@ function Get-LatestSlackVersionFolder {
         { [int]($_.Name -replace '.*?-(\d+)\.(\d+)\.(\d+)', '$2') },
         { [int]($_.Name -replace '.*?-(\d+)\.(\d+)\.(\d+)', '$3') }
 
-    $latestVersionFolder = Get-ChildItem $env:LOCALAPPDATA\slack\app-* | Sort-Object $versions -Descending | Select-Object -First 1 -ExpandProperty Name
+    $latestVersionFolder = Get-ChildItem -Directory $env:LOCALAPPDATA\slack\app-* | Sort-Object $versions -Descending | Select-Object -First 1 -ExpandProperty Name
 
     return $latestVersionFolder
 }
