@@ -55,6 +55,13 @@ function Install-SlackPatch([switch] $DevMode = $false) {
 
     $slackFile = Join-Path $slackFolder ssb-interop.js
 
+    if ((Test-Path -Path $slackFile) -eq $False) {
+        [Console]::ForegroundColor = 'red'
+        [Console]::Error.WriteLine('Unable to locate Slack''s source code to patch')
+        [Console]::ResetColor()
+        return
+    }
+
     # Backup original files
     if ((Test-Path -Path "$slackFile.bak") -eq $False) {
         Copy-Item -Path $slackFile -Destination "$slackFile.bak"
