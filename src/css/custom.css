@@ -957,6 +957,13 @@ limitations under the License.
     border: 1px solid var(--border-dim);
     color: var(--text);
  }
+ .c-sidebar_menu__list_item {
+    color: var(--text);
+}
+.c-keyboard_key {
+    color: var(--text);
+    background: var(--background);
+}
  
  /* unreads */
  .unread_empty_state {
@@ -1368,7 +1375,12 @@ limitations under the License.
      color: var(--text);
      font-weight: 400!important;
  }
- 
+.p-member_profile_field__label {
+    color: var(--text);
+}
+.p-member_profile_flexpane .p-member_profile_field {
+    border-top-color: var(--background-hover);
+}
  /* snippet / file container / download bar */
  .c-snippet__code .CodeMirror-code>div:before {
      background-color: var(--background);
@@ -1904,6 +1916,12 @@ limitations under the License.
  .p-classic_nav__model__title__info__topic--focus-within .p-classic_nav__model__title__info__topic__text:before, .p-classic_nav__model__title__info__topic:hover .p-classic_nav__model__title__info__topic__text:before {
      background: var(--background-elevated);
  }
+ .p-classic_nav__model__title__name--dim {
+    color: var(--text);
+}
+.p-message_pane__foreword__description, .p-message_pane__limited_history_alert {
+    color: var(--text);
+}
  
  /* sidebars default in general */
  .p-workspace--classic-nav .p-workspace__secondary_view {
@@ -2001,4 +2019,13 @@ limitations under the License.
  .p-classic_nav__tip_shortcut, .p-classic_nav__tip_sub {
      color: var(--text-bright);
  }
- 
+ /* team context menu */
+.c-menu_item__button, .c-menu_item__button:link, .c-menu_item__button:visited {
+    color: var(--text);
+}
+text.p-classic_nav__team_messages_progress_bar_text {
+    fill: var(--text);
+}
+.p-shared_channels_team_menu_item__label--new {
+    background-color: var(--background-hover);
+}
