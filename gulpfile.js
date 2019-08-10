@@ -4,17 +4,30 @@ const { src, dest, watch, series, parallel } = require('gulp');
 const c = require('ansi-colors');
 const connect = require('gulp-connect');
 const del = require('del');
+const eslint = require('gulp-eslint');
 const log = require('fancy-log');
 const shell = require('node-powershell');
 
 let config = {
     paths: {
+        /* Input */
         cssFiles: './src/css/*.css',
+        gulpFile: './gulpfile.js',
+        jsFiles: './src/js/*.js',
         powerShellFiles: './src/ps/*.ps1',
         powerShellScript: '.\\src\\ps\\scripts.ps1',
+
+        /* Output */
         output: './dist/'
     }
 };
+
+function lint() {
+    return gulp.src([config.paths.gulpFile, config.paths.jsFiles])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+}
 
 function server(cb) {
     let cors = function (req, res, next) {
@@ -130,6 +143,7 @@ function build() {
 
 exports.build = build;
 exports.clean = clean;
+exports.lint = lint;
 exports.startSlack = startSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
