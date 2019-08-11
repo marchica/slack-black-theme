@@ -2,9 +2,7 @@ const exec = require('child_process').execFile;
 const { join } = require('path');
 
 module.exports = (args) => {
-    console.log('launching slack', args);
-    return;
-    const slackBasePath = findLatestSlackFolder(); //TODO - should this include version folder?
+    const slackBasePath = require('./FindSlackInstall')(args);
 
     if (!slackBasePath) {
         return;
@@ -12,8 +10,8 @@ module.exports = (args) => {
 
     process.env['SLACK_DEVELOPER_MENU'] = true;
 
-    exec(join(slackBasePath, 'slack.exe'), function(err, data) {  
+    exec(join(slackBasePath, 'slack.exe'), function(err, data) {
         console.log(err);
-        console.log(data.toString());                       
+        console.log(data.toString());
     });
 };

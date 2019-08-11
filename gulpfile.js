@@ -72,7 +72,7 @@ function uninstallSlackPatch() {
 
 // function formatPSTestResults(output) {
 //     let tests = JSON.parse(output);
-    
+
 //     if (!Array.isArray(tests))
 //         tests = new Array(tests);
 

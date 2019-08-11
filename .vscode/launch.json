@@ -7,22 +7,22 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "FindLatestSlackFolder",
-            "program": "${workspaceFolder}\\src\\js\\SlackPatcher.js",
-            "args": [ "FindLatestSlackFolder" ]
+            "name": "FindSlackInstall",
+            "program": "${workspaceFolder}\\bin\\slackpatcher",
+            "args": [ "FindSlackInstall", "--slackInstallPath", "C:\\Users\\Marcy\\AppData\\Local\\slack - Copy" ]
         },
         {
             "type": "node",
             "request": "launch",
             "name": "LaunchSlack",
-            "program": "${workspaceFolder}\\src\\js\\SlackPatcher.js",
+            "program": "${workspaceFolder}\\bin\\slackpatcher",
             "args": [ "LaunchSlack" ]
         },
         {
             "type": "node",
             "request": "launch",
             "name": "InstallSlackPatch",
-            "program": "${workspaceFolder}\\src\\js\\SlackPatcher.js",
+            "program": "${workspaceFolder}\\bin\\slackpatcher",
             "args": [ "InstallSlackPatch" ]
         }
     ]

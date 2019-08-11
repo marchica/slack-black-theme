@@ -2,22 +2,19 @@
 
 const minimist = require('minimist');
 
-const isWindows = process.platform === 'win32';
-const isLinux = process.platform === 'linux';
-
 module.exports = () => {
     const args = minimist(process.argv.slice(2));
-  
+
     let cmd = args._[0] || 'help';
-  
+
     if (args.version || args.v) {
         cmd = 'version';
     }
-  
+
     if (args.help || args.h) {
         cmd = 'help';
     }
-  
+
     switch (cmd.toLowerCase()) {
     case 'findslackinstall':
         require('./cmds/FindSlackInstall')(args);
@@ -25,10 +22,10 @@ module.exports = () => {
 
     case 'launchslack':
         require('./cmds/LaunchSlack')(args);
-        break; 
+        break;
 
     case 'installslackpatch':
-        installSlackPatch();
+        require('./cmds/InstallSlackPatch')(args);
         break;
 
     case 'version':
@@ -41,13 +38,7 @@ module.exports = () => {
 
     default:
         console.error(`"${cmd}" is not a valid command!`);
+        process.exit(-1);
         break;
     }
 };
-
-
-function installSlackPatch() {
-    let devMode = !!(process.argv[3] && process.argv[3].toLowerCase() === '-devmode');
-    console.log(`DevMode: ${devMode}`);
-
-}
