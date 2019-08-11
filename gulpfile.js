@@ -7,6 +7,7 @@ const del = require('del');
 const eslint = require('gulp-eslint');
 const gulpIf = require('gulp-if');
 const log = require('fancy-log');
+const pkg = require('pkg');
 
 const slackPatcher = require('./src/js/SlackPatcher');
 
@@ -21,6 +22,7 @@ let config = {
         jsFiles: './src/js/**/*.js',
 
         /* Output */
+        exes: './release',
         output: './dist/'
     }
 };
@@ -92,6 +94,10 @@ function uninstallSlackPatch() {
 //         log(c.green('ALL TESTS PASSED!  \\(ᵔᵕᵔ)/'));
 // }
 
+async function createExecutables() {
+    await pkg.exec([ '.', '--out-path', config.paths.exes ]);
+}
+
 function css() {
     return src(config.paths.cssFiles)
         .pipe(dest(config.paths.output));
@@ -103,7 +109,7 @@ function watcher() {
 }
 
 function clean() {
-    return del([config.paths.output]);
+    return del([config.paths.output, config.paths.exes]);
 }
 
 function build() {
@@ -116,4 +122,5 @@ exports.lint = lint;
 exports.launchSlack = launchSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
+exports.createExecutables = createExecutables;
 exports.default = series(clean, build, server, launchSlack, watcher);
