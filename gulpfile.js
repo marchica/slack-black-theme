@@ -15,7 +15,7 @@ let config = {
         /* Input */
         cssFiles: './src/css/*.css',
         gulpFile: './gulpfile.js',
-        jsFiles: './src/js/SlackPatcher.js', //TODO: include all?
+        jsFiles: './src/js/**/*.js',
 
         /* Output */
         output: './dist/'
@@ -44,9 +44,9 @@ function server(cb) {
     cb();
 }
 
-async function startSlack() {
+async function launchSlack() {
     log.info('Launching Slack in developer mode');
-    slackPatcher.launchSlack();
+    slackPatcher();
     log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
     log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
     await Promise.resolve();
@@ -105,7 +105,7 @@ function build() {
 exports.build = build;
 exports.clean = clean;
 exports.lint = lint;
-exports.startSlack = startSlack;
+exports.launchSlack = launchSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
-exports.default = series(clean, build, server, startSlack, watcher);
+exports.default = series(clean, build, server, launchSlack, watcher);

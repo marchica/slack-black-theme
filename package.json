@@ -2,7 +2,7 @@
   "name": "slack-black-theme",
   "version": "1.0.0",
   "description": "A dark theme for Slack based on Visual Studio's dark theme",
-  "main": "custom.css",
+  "main": "./src/js/SlackPatcher.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +16,9 @@
     "dark",
     "theme"
   ],
+  "bin": {
+    "slackpatcher": "bin/slackpatcher"
+  },
   "author": "marchica",
   "license": "ISC",
   "bugs": {
@@ -28,7 +31,8 @@
     "fancy-log": "^1.3.3",
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
-    "gulp-eslint": "^6.0.0"
+    "gulp-eslint": "^6.0.0",
+    "minimist": "^1.2.0"
   },
   "dependencies": {
     "semver": "^6.3.0"
