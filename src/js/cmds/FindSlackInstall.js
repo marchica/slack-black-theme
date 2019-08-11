@@ -1,9 +1,7 @@
 const fs = require('fs');
 const { join } = require('path');
-// const semver = require('semver');
 
 const isWindows = process.platform === 'win32';
-// const isLinux = process.platform === 'linux';
 
 module.exports = (args) => {
     let pathsToCheck = [];
@@ -22,21 +20,11 @@ module.exports = (args) => {
             return false;
         }
     });
-    // const getAppFolders = path => fs.readdirSync(path).filter(folder => fs.statSync(join(path, folder)).isDirectory() && folder.startsWith('app-'))
-    // fs.exists(slackPath, (exists) => {
-    //     if (exists){
-    //         // let versions = getAppFolders(slackPath).map(folder => folder.replace('app-', ''));
-    //         // let latestVersion = '0.0.0';
-    //         // versions.forEach(version => {
-    //         //     if (semver.gt(version, latestVersion))
-    //         //         latestVersion = version;
-    //         // });
-    //         // slackPath = join(slackPath, `app-${latestVersion}`);
 
-    //         console.log(slackPath);
-    //         return slackPath;
-    //     }
-    // });
-    console.log(slackPath);
+    if (!slackPath){
+        console.error('Unable to locate Slack installation!');
+        process.exit(-1);
+    }
+    console.log(`Slack installed: ${slackPath}`);
     return slackPath;
 };

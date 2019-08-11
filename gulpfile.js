@@ -11,7 +11,6 @@ const pkg = require('pkg');
 
 const slackPatcher = require('./src/js/SlackPatcher');
 
-
 let config = {
     paths: {
         base: './',
@@ -71,28 +70,6 @@ function uninstallSlackPatch() {
     log.info('Uninstalling Slack patch');
     // Uninstall-SlackPatch`);
 }
-
-// function formatPSTestResults(output) {
-//     let tests = JSON.parse(output);
-
-//     if (!Array.isArray(tests))
-//         tests = new Array(tests);
-
-//     const failures = tests.filter(test => !test.Passed);
-//     const totalTests = tests.length;
-//     const failedTests = failures.length;
-//     const passedTests = totalTests - failedTests;
-
-//     failures.forEach(test => {
-//         log.error(c.bold.red(`Failed test: ${test.Name}`));
-//         log.error(test.FailureMessage);
-//     });
-
-//     log(c.cyan(`${passedTests} of ${totalTests} passed. `) + (failedTests ? c.red(`${failedTests} failed.`) : ''));
-
-//     if (totalTests === passedTests)
-//         log(c.green('ALL TESTS PASSED!  \\(ᵔᵕᵔ)/'));
-// }
 
 async function createExecutables() {
     await pkg.exec([ '.', '--out-path', config.paths.exes ]);

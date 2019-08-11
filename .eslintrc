@@ -16,6 +16,7 @@
         "indent": ["error", 4],
         "no-multi-spaces": "error",
         "no-multiple-empty-lines": "error",
-        "no-trailing-spaces": "error"
+        "no-trailing-spaces": "error",
+        "quotes": ["warn", "single"]
     }
 }

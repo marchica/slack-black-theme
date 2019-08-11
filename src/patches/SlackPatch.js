@@ -4,8 +4,8 @@
 
 const cssPath = 'URL_TO_CSS';
 
-document.addEventListener("DOMContentLoaded", function () {   
-   let customCustomCSS = `
+document.addEventListener('DOMContentLoaded', function () {
+    let customCustomCSS = `
         :root {
             /* Modify these to change your theme colors: */
             // --primary: #09F;
@@ -21,14 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
             // --letter-spacing: 2px !important;
             // --text-shadow: 1px 1px white;
         }
-    `
+    `;
 
-   fetch(cssPath).then(response => response.text())
-      .then(css => {
-         let s = document.createElement('style');
-         s.id = 'slack-custom-css';
-         s.type = 'text/css';
-         s.innerHTML = css + customCustomCSS;
-         document.head.appendChild(s);
-      });
+    fetch(cssPath).then(response => response.text())
+        .then(css => {
+            let s = document.createElement('style');
+            s.id = 'slack-custom-css';
+            s.type = 'text/css';
+            s.innerHTML = css + customCustomCSS;
+            document.head.appendChild(s);
+        });
 });

@@ -20,6 +20,10 @@ module.exports = () => {
         require('./cmds/FindSlackInstall')(args);
         break;
 
+    case 'findlatestslackversion':
+        require('./cmds/FindLatestSlackVersion')(args);
+        break;
+
     case 'launchslack':
         require('./cmds/LaunchSlack')(args);
         break;
