@@ -1,6 +1,6 @@
 'use strict';
 
-const minimist = require('minimist')
+const minimist = require('minimist');
 
 const isWindows = process.platform === 'win32';
 const isLinux = process.platform === 'linux';
@@ -11,40 +11,39 @@ module.exports = () => {
     let cmd = args._[0] || 'help';
   
     if (args.version || args.v) {
-      cmd = 'version';
+        cmd = 'version';
     }
   
     if (args.help || args.h) {
-      cmd = 'help';
+        cmd = 'help';
     }
   
     switch (cmd.toLowerCase()) {
-        case 'findslackinstall':
-            require('./cmds/FindSlackInstall')(args);
-            break;
+    case 'findslackinstall':
+        require('./cmds/FindSlackInstall')(args);
+        break;
 
-        case 'launchslack':
-            require('./cmds/LaunchSlack')(args);
-            break; 
+    case 'launchslack':
+        require('./cmds/LaunchSlack')(args);
+        break; 
 
-        case 'installslackpatch':
-            installSlackPatch();
-            break;
+    case 'installslackpatch':
+        installSlackPatch();
+        break;
 
-        case 'version':
-            require('./cmds/Version')(args);
-            break;
+    case 'version':
+        require('./cmds/Version')(args);
+        break;
 
-        case 'help':
-            require('./cmds/Help')(args);
-            break;
+    case 'help':
+        require('./cmds/Help')(args);
+        break;
 
-        default:
-            console.error(`"${cmd}" is not a valid command!`);
+    default:
+        console.error(`"${cmd}" is not a valid command!`);
         break;
     }
-}
-
+};
 
 
 function installSlackPatch() {

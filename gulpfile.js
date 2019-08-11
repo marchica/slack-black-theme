@@ -5,6 +5,7 @@ const c = require('ansi-colors');
 const connect = require('gulp-connect');
 const del = require('del');
 const eslint = require('gulp-eslint');
+const gulpIf = require('gulp-if');
 const log = require('fancy-log');
 
 const slackPatcher = require('./src/js/SlackPatcher');
@@ -12,6 +13,8 @@ const slackPatcher = require('./src/js/SlackPatcher');
 
 let config = {
     paths: {
+        base: './',
+
         /* Input */
         cssFiles: './src/css/*.css',
         gulpFile: './gulpfile.js',
@@ -22,10 +25,15 @@ let config = {
     }
 };
 
+function isFixed(file) {
+    return file.eslint != null && file.eslint.fixed;
+}
+
 function lint() {
-    return src([config.paths.gulpFile, config.paths.jsFiles])
-        .pipe(eslint())
+    return src([config.paths.gulpFile, config.paths.jsFiles], {base: config.paths.base})
+        .pipe(eslint({fix: true}))
         .pipe(eslint.format())
+        .pipe(gulpIf(isFixed, dest(config.paths.base)))
         .pipe(eslint.failAfterError());
 }
 
@@ -39,7 +47,7 @@ function server(cb) {
         root: config.paths.output,
         middleware: function () {
             return [cors];
-          }
+        }
     });
     cb();
 }

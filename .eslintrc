@@ -8,10 +8,13 @@
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2019
+        "ecmaVersion": 9
     },
     "rules": {
         "no-console": "off",
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "indent": ["error", 4],
+        "no-multi-spaces": "error",
+        "no-multiple-empty-lines": "error"
     }
 }
