@@ -11,7 +11,9 @@ module.exports = (args) => {
     process.env['SLACK_DEVELOPER_MENU'] = true;
 
     exec(join(slackBasePath, 'slack.exe'), function(err, data) {
-        console.log(err);
-        console.log(data.toString());
+        if (err)
+            console.error(err);
+        if (data && data.trim())
+            console.log(data.toString());
     });
 };

@@ -53,22 +53,21 @@ function server(cb) {
     cb();
 }
 
-async function launchSlack() {
+async function launchSlack(cb) {
     log.info('Launching Slack in developer mode');
-    slackPatcher();
+    slackPatcher(cb);
     log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
     log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
-    await Promise.resolve();
 }
 
-function installSlackPatch() {
+function installSlackPatch(cb) {
     log.info('Installing Slack patch');
-    //Install-SlackPatch -DevMode`);
+    slackPatcher(cb); //TODO - how to force --devMode flag?
 }
 
-function uninstallSlackPatch() {
+function uninstallSlackPatch(cb) {
     log.info('Uninstalling Slack patch');
-    // Uninstall-SlackPatch`);
+    slackPatcher(cb);
 }
 
 async function createExecutables() {

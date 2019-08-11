@@ -2,7 +2,7 @@
 
 const minimist = require('minimist');
 
-module.exports = () => {
+module.exports = (cb) => {
     const args = minimist(process.argv.slice(2));
 
     let cmd = args._[0] || 'help';
@@ -29,7 +29,13 @@ module.exports = () => {
         break;
 
     case 'installslackpatch':
+    case 'install':
         require('./cmds/InstallSlackPatch')(args);
+        break;
+
+    case 'uninstallslackpatch':
+    case 'uninstall':
+        require('./cmds/UninstallSlackPatch')(args);
         break;
 
     case 'version':
@@ -45,4 +51,6 @@ module.exports = () => {
         process.exit(-1);
         break;
     }
+
+    if (cb) cb();
 };

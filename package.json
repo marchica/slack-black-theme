@@ -1,7 +1,7 @@
 {
   "name": "slack-patcher",
   "version": "1.0.0",
-  "description": "A dark theme for Slack based on Visual Studio's dark theme",
+  "description": "A dark theme installer for Slack based on Visual Studio's dark theme",
   "main": "./src/js/SlackPatcher.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

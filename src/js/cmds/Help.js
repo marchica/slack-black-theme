@@ -1,15 +1,30 @@
+const { version, name, author, description } = require('../../../package.json');
+
 const menus = {
     main: `
-    slackpatcher [command] <options>
+${name} (v${version}) by ${author}
+${description}
 
-    today .............. show weather for today
+slackpatcher [command] <options>
+
+    install ............ install the slack patch
+    uninstall .......... uninstall the slack patch
     version ............ show package version
     help ............... show help menu for a command`,
 
-    today: `
-    slackpatcher today <options>
+    install: `
+slackpatcher install <options>
+    Applies a patch for a dark theme to the highest version of the first Slack install located
 
-    --location, -l ..... the location to use`,
+Options:
+    --slackInstallLocation ..... the location of slack install if you wish to override (optional)`,
+
+    uninstall: `
+slackpatcher uninstall <options>
+    Removes the patch previously installed for the highest version of the first Slack install located
+
+Options:
+    --slackInstallLocation ..... the location of slack install if you wish to override (optional)`
 };
 
 module.exports = (args) => {
