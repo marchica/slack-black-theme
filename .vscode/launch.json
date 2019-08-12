@@ -31,6 +31,13 @@
             "name": "InstallSlackPatch",
             "program": "${workspaceFolder}\\bin\\slackpatcher",
             "args": [ "InstallSlackPatch" ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "UninstallSlackPatch",
+            "program": "${workspaceFolder}\\bin\\slackpatcher",
+            "args": [ "UninstallSlackPatch" ]
         }
     ]
 }
