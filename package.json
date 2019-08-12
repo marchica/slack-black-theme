@@ -37,6 +37,7 @@
     "pkg": "^4.4.0"
   },
   "dependencies": {
+    "asar": "^2.0.1",
     "semver": "^6.3.0"
   }
 }
