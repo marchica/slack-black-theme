@@ -17,6 +17,7 @@
         "no-multi-spaces": "error",
         "no-multiple-empty-lines": "error",
         "no-trailing-spaces": "error",
-        "quotes": ["warn", "single"]
+        "quotes": ["warn", "single"],
+        "no-unused-vars": "warn"
     }
 }

@@ -55,7 +55,8 @@ function server(cb) {
 
 async function launchSlack(cb) {
     log.info('Launching Slack in developer mode');
-    slackPatcher(cb);
+    slackPatcher.launchSlack();
+    cb();
     log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
     log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
 }
