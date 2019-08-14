@@ -1905,7 +1905,7 @@ limitations under the License.
      color: var(--text);
  }
  .p-classic_nav__team_header {
-     background-color: var(--background-elevated);
+     background-color: var(--background-elevated) !important;
  }
  .p-team_sidebar__icon--active, .p-team_sidebar__icon--active:hover {
      box-shadow: 0 0 0 3px rgb(19,30,39), 0 0 0 6px var(--border-dim);

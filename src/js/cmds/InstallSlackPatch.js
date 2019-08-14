@@ -1,15 +1,59 @@
 const fs = require('fs').promises;
-const { join } = require('path');
+const { join, resolve } = require('path');
 const asar = require('asar');
+const https = require('https');
 
-async function fileExists(file){
+
+const fileExists = async function (file) {
     try {
         let stat = await fs.stat(file);
         return stat.isFile();
     } catch (e) {
         return false;
     }
-}
+};
+
+const downloadFile = function (url) {
+    return new Promise(function(resolve, reject) {
+        https.get(url, (res) => {
+            if (res.statusCode != 200) {
+                reject(res.statusCode);
+                return;
+            }
+            let data = '';
+            res.on('data', (d) => {
+                data += d;
+            });
+            res.on('end', () => {
+                resolve(data);
+            });
+        }).on('error', (e) => {
+            reject(e);
+        });
+    });
+};
+
+const removeDir = async (dir) => {
+    try {
+        const files = await fs.readdir(dir);
+        await Promise.all(files.map(async (file) => {
+            try {
+                const p = join(dir, file);
+                const stat = await fs.lstat(p);
+                if (stat.isDirectory()) {
+                    await removeDir(p);
+                } else {
+                    await fs.unlink(p);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }));
+        await fs.rmdir(dir);
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 module.exports = async (args) => {
     // Find correct Slack folder
@@ -27,9 +71,20 @@ module.exports = async (args) => {
         process.exit(-1);
     }
 
-    // Backup original asar
-    if (!(await fileExists(slackAsarBak)))
+    // Check if asar backup exists
+    if (await fileExists(slackAsarBak)) {
+        const fileContents = await fs.readFile(slackAsar);
+
+        // Check if files have already been patched
+        const patchIdentifier = '//Patch from https://github.com/marchica/slack-black-theme';
+        if (fileContents.includes(patchIdentifier)) {
+            console.log('Already patched! Will re-apply...');
+            await fs.copyFile(slackAsarBak, slackAsar);
+        }
+    } else {
+        // Backup original asar
         await fs.copyFile(slackAsar, slackAsarBak);
+    }
 
     // Unpack asar
     try {
@@ -46,42 +101,32 @@ module.exports = async (args) => {
         process.exit(-1);
     }
 
-    // Read slack file into memory
-    try {
-        const fileContents = await fs.readFile(slackFile);
-
-        // Check if files have already been patched
-        const patchIdentifier = '//Patch from https://github.com/marchica/slack-black-theme';
-
-        if (fileContents.includes(patchIdentifier)) {
-            console.log('Already patched! Will re-apply...'); //TODO - how to reapply from here?
-        //Copy-Item -Path "$slackFile.bak" -Destination $slackFile
-        }
-    } catch (e) {
-        console.log(`Error reading source file: ${e}`);
-    }
-
-    console.log('Patching file: $slackFile');
+    console.log(`Patching file: ${slackAsar}`);
 
     // Read patch into memory and replace URL
     const urlPlaceholder = 'URL_TO_CSS';
     const url = args.devMode ? 'http://127.0.0.1:8080/custom.css' : 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/dist/custom.css';
 
-    //$patchContents = (Invoke-WebRequest 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/SlackPatch.js' -UseBasicParsing).Content.Replace($urlPlaceholder, $url)
+    const patchUrl = 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/SlackPatch.js'; //TODO - update to new path
+    let patchContents = (await downloadFile(patchUrl)).replace(urlPlaceholder, url);
+
+    // If dev mode, add dev patch to auto-reload CSS
+    if (args.devMode) {
+        const pathPlaceholder = 'PATH_TO_LOCAL_CSS';
+        const path = resolve('./dist/custom.css').replace(/\\/g, '\\\\');
+
+        const devPatchUrl = 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/DevSlackPatch.js'; //TODO - update to new path
+        patchContents += (await downloadFile(devPatchUrl)).replace(pathPlaceholder, path);
+    }
 
     // Add patch to end of slack file
-    //Add-Content -Path $slackFile -Value $patchContents
+    await fs.appendFile(slackFile, patchContents);
 
-    // // If dev mode, add dev patch to auto-reload CSS
-    // if (args.devMode) {
-    //     $pathPlaceholder = 'PATH_TO_LOCAL_CSS'
-    //     $path = (Join-Path (Resolve-Path $PSScriptRoot\..\..) dist\custom.css).Replace('\', '\\')
+    // Pack new asar
+    await asar.createPackage(slackAsarUnpacked, slackAsar);
 
-    //     $devPatchContents = (Invoke-WebRequest 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/DevSlackPatch.js' -UseBasicParsing).Content.Replace($pathPlaceholder, $path)
-
-    //     // Add patch to end of slack file
-    //     Add-Content -Path $slackFile -Value $devPatchContents
-    // }
+    // Clean up unpacked folder
+    await removeDir(slackAsarUnpacked);
 
     console.log('Successfully patched!');
     console.log('** Ctrl-R in Slack to refresh **');
