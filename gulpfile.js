@@ -7,9 +7,8 @@ const del = require('del');
 const eslint = require('gulp-eslint');
 const gulpIf = require('gulp-if');
 const log = require('fancy-log');
+const minimist = require('minimist');
 const pkg = require('pkg');
-
-const slackPatcher = require('./src/js/SlackPatcher');
 
 let config = {
     paths: {
@@ -55,7 +54,7 @@ function server(cb) {
 
 async function launchSlack(cb) {
     log.info('Launching Slack in developer mode');
-    slackPatcher.launchSlack();
+    require('./src/js/cmds/LaunchSlack')(minimist([])); //TODO - not sure this ever completes
     cb();
     log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
     log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
@@ -63,12 +62,14 @@ async function launchSlack(cb) {
 
 function installSlackPatch(cb) {
     log.info('Installing Slack patch');
-    slackPatcher(cb); //TODO - how to force --devMode flag?
+    require('./src/js/cmds/InstallSlackPatch')(minimist(['--devMode']));
+    cb(); //TODO - cb happens before it finishes...
 }
 
 function uninstallSlackPatch(cb) {
     log.info('Uninstalling Slack patch');
-    slackPatcher(cb);
+    require('./src/js/cmds/UninstallSlackPatch')(minimist([]));
+    cb();
 }
 
 async function createExecutables() {

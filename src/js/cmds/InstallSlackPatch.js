@@ -112,6 +112,7 @@ module.exports = async (args) => {
 
     // If dev mode, add dev patch to auto-reload CSS
     if (args.devMode) {
+        console.log('Enabling dev mode! ^_^');
         const pathPlaceholder = 'PATH_TO_LOCAL_CSS';
         const path = resolve('./dist/custom.css').replace(/\\/g, '\\\\');
 

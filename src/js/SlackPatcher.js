@@ -55,6 +55,4 @@ module.exports = (cb) => {
     if (cb) cb();
 };
 
-module.exports.launchSlack = async function () { //TODO - add others?
-    return require('./cmds/LaunchSlack');
-};
+//TODO - console.log vs process.stdout.write ?
