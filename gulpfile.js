@@ -1,6 +1,7 @@
 'use strict';
 
 const { src, dest, watch, series } = require('gulp');
+const bump = require('gulp-bump');
 const c = require('ansi-colors');
 const connect = require('gulp-connect');
 const del = require('del');
@@ -12,12 +13,13 @@ const pkg = require('pkg');
 
 let config = {
     paths: {
-        base: './',
+        root: './',
 
         /* Input */
         cssFiles: './src/css/*.css',
         gulpFile: './gulpfile.js',
         jsFiles: './src/js/**/*.js',
+        packageJson: './package.json',
 
         /* Output */
         exes: './release',
@@ -30,10 +32,10 @@ function isFixed(file) {
 }
 
 function lint() {
-    return src([config.paths.gulpFile, config.paths.jsFiles], {base: config.paths.base})
+    return src([config.paths.gulpFile, config.paths.jsFiles], {base: config.paths.root})
         .pipe(eslint({fix: true}))
         .pipe(eslint.format())
-        .pipe(gulpIf(isFixed, dest(config.paths.base)))
+        .pipe(gulpIf(isFixed, dest(config.paths.root)))
         .pipe(eslint.failAfterError());
 }
 
@@ -42,7 +44,6 @@ function server(cb) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
     };
-
     connect.server({
         root: config.paths.output,
         middleware: function () {
@@ -76,6 +77,22 @@ async function createExecutables() {
     await pkg.exec([ '.', '--out-path', config.paths.exes ]);
 }
 
+function versionBump() {
+    const args = minimist(process.argv.slice(2));
+    let options = {};
+    let type = args.type;
+    let version = args.version;
+    if (version)
+        options.version = version;
+    else if (type)
+        options.type = type;
+    else
+        options.type = 'prerelease';
+    return src([config.paths.packageJson])
+        .pipe(bump(options))
+        .pipe(dest(config.paths.root));
+}
+
 function css() {
     return src(config.paths.cssFiles)
         .pipe(dest(config.paths.output));
@@ -101,4 +118,5 @@ exports.launchSlack = launchSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
 exports.createExecutables = createExecutables;
+exports.versionBump = versionBump;
 exports.default = series(clean, build, server, launchSlack, watcher);
