@@ -9,6 +9,9 @@ const gulpIf = require('gulp-if');
 const log = require('fancy-log');
 const minimist = require('minimist');
 const pkg = require('pkg');
+const { join } = require('path');
+
+const args = minimist(process.argv.slice(2));
 
 let config = {
     paths: {
@@ -18,11 +21,13 @@ let config = {
         cssFiles: './src/css/*.css',
         gulpFile: './gulpfile.js',
         jsFiles: './src/js/**/*.js',
-        packageJson: './package.json',
+        packageJson: './package*.json',
+        updaterFile: './src/js/Updater.js',
 
         /* Output */
         exes: './release',
-        output: './dist/'
+        output: './dist/',
+        updaterExes: './release-updater/'
     }
 };
 
@@ -59,7 +64,33 @@ function uninstallSlackPatch(cb) {
 }
 
 async function createExecutables() {
-    await pkg.exec([ '.', '--out-path', config.paths.exes ]);
+    await del([config.paths.exes]);
+    let options = [ '.' ];
+    if (args.win) {
+        options.push('-t');
+        options.push('node12-win-x64');
+        options.push('-o');
+        options.push(join(config.paths.exes, 'slack-patcher-win.exe'));
+    } else {
+        options.push('--out-path');
+        options.push(config.paths.exes);
+    }
+    await pkg.exec(options);
+}
+
+async function createUpdaterExecutables() {
+    await del([config.paths.updaterExes]);
+    let options = [ config.paths.updaterFile ];
+    if (args.win) {
+        options.push('-t');
+        options.push('node12-win-x64');
+        options.push('-o');
+        options.push(join(config.paths.updaterExes, 'Updater-win.exe'));
+    } else {
+        options.push('--out-path');
+        options.push(config.paths.updaterExes);
+    }
+    await pkg.exec(options);
 }
 
 function versionBump() {
@@ -109,5 +140,6 @@ exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
 exports.updateCSS = updateCSS;
 exports.createExecutables = createExecutables;
+exports.createUpdaterExecutables = createUpdaterExecutables;
 exports.versionBump = versionBump;
 exports.default = series(clean, build, launchSlack, watcher);

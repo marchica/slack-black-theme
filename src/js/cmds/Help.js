@@ -14,7 +14,8 @@ Usage:
 Options:
   install                         Install the Slack patch
   uninstall                       Uninstall the Slack patch
-  updatecss                       Update CSS with latest fixes  
+  updatecss                       Update CSS with latest fixes
+  update                          Update this exe to the latest version
   version                         Show package version
   help [command]                  Show help menu for a command`,
 
@@ -40,7 +41,12 @@ Usage:
     Updates the CustomTheme.css file with the latest fixes from GitHub
 
 Options:
-  --devMode                       If developing, use the latest from disk`
+  --devMode                       If developing, use the latest from disk`,
+
+    update: `
+Usage:
+${exeName} update
+  Updates the ${exeName} with the latest version from GitHub`
 };
 
 module.exports = (args) => {

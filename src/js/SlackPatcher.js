@@ -42,6 +42,10 @@ module.exports = (cb) => {
         require('./cmds/UninstallSlackPatch')(args);
         break;
 
+    case 'update':
+        require('./cmds/Update')(args);
+        break;
+
     case 'version':
         require('./cmds/Version')(args);
         break;
