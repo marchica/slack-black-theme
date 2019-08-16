@@ -1,14 +1,6 @@
 const fs = require('fs').promises;
 const { join } = require('path');
-
-async function fileExists(file){
-    try {
-        let stat = await fs.stat(file);
-        return stat.isFile();
-    } catch (e) {
-        return false;
-    }
-}
+const { fileExists } = require('./../Utils');
 
 module.exports = async (args) => {
     let slackPath = require('./FindLatestSlackVersion')(args);

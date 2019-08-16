@@ -1,6 +1,7 @@
+const asar = require('asar');
 const fs = require('fs').promises;
 const { join } = require('path');
-const asar = require('asar');
+const { fileExists, removeDir } = require('./../Utils');
 
 const patch = `
 //Patch from https://github.com/marchica/slack-black-theme
@@ -8,6 +9,7 @@ var fs = require('fs');
 const cssPath = 'PATH_TO_CSS';
 document.addEventListener('DOMContentLoaded', function () {
     fs.readFile(cssPath, function(err, css) {
+        if (!css) return;
         let s = document.createElement('style');
         s.id = 'slack-custom-css';
         s.type = 'text/css';
@@ -17,42 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 window.reloadCss = function() {
     fs.readFile(cssPath, function(err, css) {
+        if (!css) return;
         let styleElement = document.querySelector('style#slack-custom-css');
         styleElement.innerHTML = css.toString();
     });
 };
 fs.watch(cssPath, reloadCss);`;
-
-const fileExists = async function (file) { //TODO - move to shared file
-    try {
-        let stat = await fs.stat(file);
-        return stat.isFile();
-    } catch (e) {
-        return false;
-    }
-};
-
-const removeDir = async (dir) => {
-    try {
-        const files = await fs.readdir(dir);
-        await Promise.all(files.map(async (file) => {
-            try {
-                const p = join(dir, file);
-                const stat = await fs.lstat(p);
-                if (stat.isDirectory()) {
-                    await removeDir(p);
-                } else {
-                    await fs.unlink(p);
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        }));
-        await fs.rmdir(dir);
-    } catch (err) {
-        console.error(err);
-    }
-};
 
 module.exports = async (args) => {
     // Find correct Slack folder

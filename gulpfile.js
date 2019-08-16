@@ -3,7 +3,6 @@
 const { src, dest, watch, series } = require('gulp');
 const bump = require('gulp-bump');
 const c = require('ansi-colors');
-const connect = require('gulp-connect');
 const del = require('del');
 const eslint = require('gulp-eslint');
 const gulpIf = require('gulp-if');
@@ -37,20 +36,6 @@ function lint() {
         .pipe(eslint.format())
         .pipe(gulpIf(isFixed, dest(config.paths.root)))
         .pipe(eslint.failAfterError());
-}
-
-function server(cb) { //TODO - remove server
-    let cors = function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        next();
-    };
-    connect.server({
-        root: config.paths.output,
-        middleware: function () {
-            return [cors];
-        }
-    });
-    cb();
 }
 
 async function launchSlack(cb) {
@@ -98,8 +83,13 @@ function css() {
         .pipe(dest(config.paths.output));
 }
 
+async function updateCSS() {
+    await require('./src/js/cmds/UpdateCSS')(minimist(['--devMode']));
+}
+
 function watcher() {
     watch([config.paths.cssFiles], css);
+    watch([config.paths.output], updateCSS);
     watch([config.paths.gulpFile, config.paths.jsFiles], lint);
 }
 
@@ -117,6 +107,7 @@ exports.lint = lint;
 exports.launchSlack = launchSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;
+exports.updateCSS = updateCSS;
 exports.createExecutables = createExecutables;
 exports.versionBump = versionBump;
-exports.default = series(clean, build, server, launchSlack, watcher);
+exports.default = series(clean, build, launchSlack, watcher);
