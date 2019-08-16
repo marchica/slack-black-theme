@@ -39,7 +39,7 @@ function lint() {
         .pipe(eslint.failAfterError());
 }
 
-function server(cb) {
+function server(cb) { //TODO - remove server
     let cors = function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();

@@ -14,6 +14,7 @@ Usage:
 Options:
   install                         Install the Slack patch
   uninstall                       Uninstall the Slack patch
+  updatecss                       Update CSS with latest fixes  
   version                         Show package version
   help [command]                  Show help menu for a command`,
 
@@ -31,7 +32,15 @@ Usage:
     Removes the patch previously installed for the highest version of the first Slack install located
 
 Options:
-  --slackInstallLocation          Location of Slack install if you wish to override (optional)`
+  --slackInstallLocation          Location of Slack install if you wish to override (optional)`,
+
+    updatecss: `
+Usage:
+  ${exeName} updatecss <options>
+    Updates the CustomTheme.css file with the latest fixes from GitHub
+
+Options:
+  --devMode                       If developing, use the latest from disk`
 };
 
 module.exports = (args) => {

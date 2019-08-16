@@ -28,6 +28,10 @@ module.exports = (cb) => {
         require('./cmds/LaunchSlack')(args);
         break;
 
+    case 'updatecss':
+        require('./cmds/UpdateCSS')(args);
+        break;
+
     case 'installslackpatch':
     case 'install':
         require('./cmds/InstallSlackPatch')(args);

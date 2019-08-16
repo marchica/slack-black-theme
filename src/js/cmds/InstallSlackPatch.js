@@ -1,36 +1,35 @@
 const fs = require('fs').promises;
-const { join, resolve } = require('path');
+const { join } = require('path');
 const asar = require('asar');
-const https = require('https');
 
+const patch = `
+//Patch from https://github.com/marchica/slack-black-theme
+var fs = require('fs');
+const cssPath = 'PATH_TO_CSS';
+document.addEventListener('DOMContentLoaded', function () {
+    fs.readFile(cssPath, function(err, css) {
+        let s = document.createElement('style');
+        s.id = 'slack-custom-css';
+        s.type = 'text/css';
+        s.innerHTML = css.toString();
+        document.head.appendChild(s);
+    });
+});
+window.reloadCss = function() {
+    fs.readFile(cssPath, function(err, css) {
+        let styleElement = document.querySelector('style#slack-custom-css');
+        styleElement.innerHTML = css.toString();
+    });
+};
+fs.watch(cssPath, reloadCss);`;
 
-const fileExists = async function (file) {
+const fileExists = async function (file) { //TODO - move to shared file
     try {
         let stat = await fs.stat(file);
         return stat.isFile();
     } catch (e) {
         return false;
     }
-};
-
-const downloadFile = function (url) {
-    return new Promise(function(resolve, reject) {
-        https.get(url, (res) => {
-            if (res.statusCode != 200) {
-                reject(res.statusCode);
-                return;
-            }
-            let data = '';
-            res.on('data', (d) => {
-                data += d;
-            });
-            res.on('end', () => {
-                resolve(data);
-            });
-        }).on('error', (e) => {
-            reject(e);
-        });
-    });
 };
 
 const removeDir = async (dir) => {
@@ -103,22 +102,13 @@ module.exports = async (args) => {
 
     console.log(`Patching file: ${slackAsar}`);
 
+    // Get latest Custom CSS File
+    await require('./UpdateCSS')(args);
+
     // Read patch into memory and replace URL
-    const urlPlaceholder = 'URL_TO_CSS';
-    const url = args.devMode ? 'http://127.0.0.1:8080/custom.css' : 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/dist/custom.css';
-
-    const patchUrl = 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/SlackPatch.js'; //TODO - update to new path
-    let patchContents = (await downloadFile(patchUrl)).replace(urlPlaceholder, url);
-
-    // If dev mode, add dev patch to auto-reload CSS
-    if (args.devMode) {
-        console.log('Enabling dev mode! ^_^');
-        const pathPlaceholder = 'PATH_TO_LOCAL_CSS';
-        const path = resolve('./dist/custom.css').replace(/\\/g, '\\\\');
-
-        const devPatchUrl = 'https://raw.githubusercontent.com/marchica/slack-black-theme/master/src/js/DevSlackPatch.js'; //TODO - update to new path
-        patchContents += (await downloadFile(devPatchUrl)).replace(pathPlaceholder, path);
-    }
+    const cssPathPlaceholder = 'PATH_TO_CSS';
+    const cssPath = join(slackPath, 'CustomTheme.css');
+    let patchContents = patch.replace(cssPathPlaceholder, cssPath.replace(/\\/g, '\\\\'));
 
     // Add patch to end of slack file
     await fs.appendFile(slackFile, patchContents);
@@ -130,5 +120,6 @@ module.exports = async (args) => {
     await removeDir(slackAsarUnpacked);
 
     console.log('Successfully patched!');
+    console.log(`Custom CSS File: ${cssPath}`);
     console.log('** Ctrl-R in Slack to refresh **');
 };
