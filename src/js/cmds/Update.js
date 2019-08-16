@@ -32,7 +32,7 @@ module.exports = async () => {
             err = fsSync.openSync('./out.log', 'a');
 
         spawn(updaterPath, [`--execPath=${execPath}`], {
-            stdio: [ 'ignore', out, err ],
+            stdio: ['ignore', out, err],
             detached: true
         }).unref();
     } else {

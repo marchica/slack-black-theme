@@ -37,7 +37,7 @@ module.exports = async (args) => {
     let slackFile = join(slackAsarUnpacked, 'dist', 'ssb-interop.bundle.js');
 
     // Ensure we have the asar
-    if(!(await fileExists(slackAsar))) {
+    if (!(await fileExists(slackAsar))) {
         console.error('Unable to locate Slack\'s asar to patch');
         process.exit(-1);
     }
@@ -67,7 +67,7 @@ module.exports = async (args) => {
     }
 
     // Ensure we have the file to patch
-    if(!(await fileExists(slackFile))) {
+    if (!(await fileExists(slackFile))) {
         console.error('Unable to locate Slack\'s source code to patch');
         process.exit(-1);
     }

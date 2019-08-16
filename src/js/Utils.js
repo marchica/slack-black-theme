@@ -2,7 +2,7 @@ const fs = require('fs').promises;
 const https = require('https');
 const { join } = require('path');
 
-const fileExists = async function (file) {
+const fileExists = async function(file) {
     try {
         let stat = await fs.stat(file);
         return stat.isFile();
@@ -33,7 +33,7 @@ const removeDir = async (dir) => {
     }
 };
 
-const downloadFile = function (url) {
+const downloadFile = function(url) {
     return new Promise(function(resolve, reject) {
         https.get(url, (res) => {
             if (res.statusCode != 200) {

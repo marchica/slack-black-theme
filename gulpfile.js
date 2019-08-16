@@ -65,7 +65,7 @@ function uninstallSlackPatch(cb) {
 
 async function createExecutables() {
     await del([config.paths.exes]);
-    let options = [ '.' ];
+    let options = ['.'];
     if (args.win) {
         options.push('-t');
         options.push('node12-win-x64');
@@ -80,7 +80,7 @@ async function createExecutables() {
 
 async function createUpdaterExecutables() {
     await del([config.paths.updaterExes]);
-    let options = [ config.paths.updaterFile ];
+    let options = [config.paths.updaterFile];
     if (args.win) {
         options.push('-t');
         options.push('node12-win-x64');
