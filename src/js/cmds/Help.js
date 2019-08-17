@@ -30,7 +30,7 @@ Options:
     uninstall: `
 Usage:
   ${exeName} uninstall <options>
-    Removes the patch previously installed for the highest version of the first Slack install located
+    Removes the patch previously installed for the highest version of the first Slack install located. If Slack is running, refresh with ctrl-R
 
 Options:
   --slackInstallLocation          Location of Slack install if you wish to override (optional)`,
