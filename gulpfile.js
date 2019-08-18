@@ -85,12 +85,18 @@ async function createUpdaterExecutables() {
         options.push('-t');
         options.push('node12-win-x64');
         options.push('-o');
-        options.push(join(config.paths.updaterExes, 'Updater-win.exe'));
+        options.push(join(config.paths.updaterExes, 'updater.exe'));
     } else {
         options.push('--out-path');
         options.push(config.paths.updaterExes);
     }
     await pkg.exec(options);
+}
+
+async function exe() {
+    args.win = true;
+    await createExecutables();
+    await createUpdaterExecutables();
 }
 
 function versionBump() {
@@ -141,5 +147,6 @@ exports.uninstallSlackPatch = uninstallSlackPatch;
 exports.updateCSS = updateCSS;
 exports.createExecutables = createExecutables;
 exports.createUpdaterExecutables = createUpdaterExecutables;
+exports.exe = exe;
 exports.versionBump = versionBump;
 exports.default = series(clean, build, launchSlack, watcher);
