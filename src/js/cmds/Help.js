@@ -41,7 +41,8 @@ Usage:
     Updates the CustomTheme.css file with the latest fixes from GitHub
 
 Options:
-  --devMode                       If developing, use the latest from disk`,
+    --devBranch                   To use the latest from the dev branch in GitHub
+    --devMode                     If developing, use the latest from disk`,
 
     update: `
 Usage:

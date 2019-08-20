@@ -1,15 +1,16 @@
-# Slack Dark Theme 
+# Slack Dark Theme Installer
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)]([WJU67EEEDWB42](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WJU67EEEDWB42&currency_code=USD&source=url))
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/marchica/slack-black-theme?color=%238b5eb3&include_prereleases&sort=semver) [![Donate](https://img.shields.io/badge/donate-paypal-green.svg)]([WJU67EEEDWB42](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WJU67EEEDWB42&currency_code=USD&source=url)) [![Gitter](https://img.shields.io/gitter/room/marchica/slack-black-theme?color=blue)](https://gitter.im/marchica/slack-black-theme)
 
 A dark [Slack](https://slack.com/) theme with an easy installer for Windows users!
 
+:point_right: Updated for Slack 4.0 :point_left:
 
 ![image](https://user-images.githubusercontent.com/141490/57653431-c8c34100-759f-11e9-8e6a-aec8df7de6f3.png)
 
 # Install
 
-On Windows with Slack already installed, download the latest exe, open a command prompt in that folder, and run this command:
+On Windows with Slack 4.0+ already installed, download the latest exe, open a command prompt in that folder, and run this command:
 
 ```batch
 slack-patcher install
@@ -38,6 +39,8 @@ This project was forked from the work of many others. :pray:
 
 # Issues
 
+Need help? Please feel free to [chat](https://gitter.im/marchica/slack-black-theme) with me. :speech_balloon:
+
 Check out my [project board](https://github.com/marchica/slack-black-theme/projects/1) to see what's left. If it's not there, please submit issues, ideas, or suggestions [here](https://github.com/marchica/slack-black-theme/issues).
 
 # Development
@@ -45,6 +48,8 @@ Check out my [project board](https://github.com/marchica/slack-black-theme/proje
 ## Theme CSS
 
 After running the installer, it will print out the location of a CSS file that you can modify and Slack will automatically reload your changes.
+
+If you want to help test the latest fixes, run `slack-patcher install --devBranch` to use the CSS from the dev branch.
 
 Pull requests for fixes or custom themes are welcome!
 

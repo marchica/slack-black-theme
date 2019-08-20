@@ -15,11 +15,9 @@ module.exports = async () => {
     console.log(`Current version: ${version}`);
 
     // Check for new version
-    //let latestVersion = JSON.parse(await downloadFile('https://raw.githubusercontent.com/marchica/slack-black-theme/master/package.json')).version;
+    let latestVersion = JSON.parse(await downloadFile('https://raw.githubusercontent.com/marchica/slack-black-theme/master/package.json')).version;
 
-    //console.log(`Latest version: ${latestVersion}`);
-
-    let latestVersion = '5.0.0'; //TODO - delete!
+    console.log(`Latest version: ${latestVersion}`);
 
     // If new version, download updater.exe to tmp folder
     if (semver.gt(latestVersion, version)) {
@@ -27,6 +25,7 @@ module.exports = async () => {
 
         let updaterPath = path.join(__dirname, '../../../release-updater/updater.exe');
 
+        //TODO - make sure this is deleted on reboot
         const target = tmp.fileSync({keep: true, postfix: '.exe', discardDescriptor: true }).name;
 
         fs.writeFileSync(target, fs.readFileSync(updaterPath));
