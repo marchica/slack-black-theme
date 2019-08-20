@@ -1,11 +1,12 @@
 'use strict';
 
-const { src, dest, watch, series } = require('gulp');
+const { src, dest, watch, series, lastRun } = require('gulp');
 const bump = require('gulp-bump');
 const c = require('ansi-colors');
 const del = require('del');
 const eslint = require('gulp-eslint');
 const gulpIf = require('gulp-if');
+const gulpStylelint = require('gulp-stylelint');
 const log = require('fancy-log');
 const minimist = require('minimist');
 const pkg = require('pkg');
@@ -41,6 +42,13 @@ function lint() {
         .pipe(eslint.format())
         .pipe(gulpIf(isFixed, dest(config.paths.root)))
         .pipe(eslint.failAfterError());
+}
+
+function cssLint() {
+    return src([config.paths.cssFiles], {since: lastRun(cssLint) + 1000})
+        .pipe(gulpStylelint({fix: true, reporters: [{formatter: 'string', console: true}]}))
+        .pipe(dest('./src/css/'))
+        .pipe(dest(config.paths.output));
 }
 
 async function launchSlack(cb) {
@@ -115,17 +123,12 @@ function versionBump() {
         .pipe(dest(config.paths.root));
 }
 
-function css() {
-    return src(config.paths.cssFiles)
-        .pipe(dest(config.paths.output));
-}
-
 async function updateCSS() {
     await require('./src/js/cmds/UpdateCSS')(minimist(['--devMode']));
 }
 
 function watcher() {
-    watch([config.paths.cssFiles], css);
+    watch([config.paths.cssFiles], cssLint);
     watch([config.paths.output], updateCSS);
     watch([config.paths.gulpFile, config.paths.jsFiles], lint);
 }
@@ -134,13 +137,15 @@ function clean() {
     return del([config.paths.output, config.paths.exes]);
 }
 
-function build() {
-    return css();
+function build() { //TODO - should this build exes?
+    return cssLint();
 }
 
 exports.build = build;
 exports.clean = clean;
 exports.lint = lint;
+exports.cssLint = cssLint;
+exports.watch = watcher;
 exports.launchSlack = launchSlack;
 exports.installSlackPatch = installSlackPatch;
 exports.uninstallSlackPatch = uninstallSlackPatch;

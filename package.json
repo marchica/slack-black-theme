@@ -32,8 +32,10 @@
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-if": "^3.0.0",
+    "gulp-stylelint": "^9.0.0",
     "minimist": "^1.2.0",
-    "pkg": "^4.4.0"
+    "pkg": "^4.4.0",
+    "stylelint": "^10.1.0"
   },
   "dependencies": {
     "asar": "^2.0.1",

@@ -1,0 +1,16 @@
+{
+  "rules": {
+      "indentation": 4,
+      "no-eol-whitespace": true,
+    "block-no-empty": true,
+    "color-no-invalid-hex": true,
+    "declaration-colon-space-before": "never",
+    "declaration-colon-space-after": "always",
+    "max-empty-lines": 2,
+    "no-invalid-double-slash-comments": true,
+    "no-extra-semicolons": true,
+    "declaration-block-trailing-semicolon": "always",
+    "block-opening-brace-space-after": "always-single-line",
+    "block-closing-brace-space-before": "always-single-line"
+  }
+}
