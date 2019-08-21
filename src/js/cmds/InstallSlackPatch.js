@@ -1,30 +1,8 @@
 const asar = require('asar');
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const { join } = require('path');
 const { fileExists, removeDir } = require('./../Utils');
-
-const patch = `
-//Patch from https://github.com/marchica/slack-black-theme
-var fs = require('fs');
-const cssPath = 'PATH_TO_CSS';
-document.addEventListener('DOMContentLoaded', function () {
-    fs.readFile(cssPath, function(err, css) {
-        if (!css) return;
-        let s = document.createElement('style');
-        s.id = 'slack-custom-css';
-        s.type = 'text/css';
-        s.innerHTML = css.toString();
-        document.head.appendChild(s);
-    });
-});
-window.reloadCss = function() {
-    fs.readFile(cssPath, function(err, css) {
-        if (!css) return;
-        let styleElement = document.querySelector('style#slack-custom-css');
-        styleElement.innerHTML = css.toString();
-    });
-};
-fs.watch(cssPath, reloadCss);`;
 
 module.exports = async (args) => {
     // Find correct Slack folder
@@ -80,7 +58,9 @@ module.exports = async (args) => {
     // Read patch into memory and replace URL
     const cssPathPlaceholder = 'PATH_TO_CSS';
     const cssPath = join(slackPath, 'CustomTheme.css');
-    let patchContents = patch.replace(cssPathPlaceholder, cssPath.replace(/\\/g, '\\\\'));
+    const patchFile = join(__dirname, '../patch/SlackPatch.js');
+    let patchContents = (fsSync.readFileSync(patchFile)).toString();
+    patchContents = patchContents.replace(cssPathPlaceholder, cssPath.replace(/\\/g, '\\\\'));
 
     // Add patch to end of slack file
     await fs.appendFile(slackFile, patchContents);

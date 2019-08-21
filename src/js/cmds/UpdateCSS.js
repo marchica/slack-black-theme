@@ -3,7 +3,7 @@ const { join } = require('path');
 const { fileExists, downloadFile } = require('./../Utils');
 
 module.exports = async (args) => {
-    let slackPath = require('./FindLatestSlackVersion')(args);
+    let slackPath = args.slackPath ? args.slackPath : require('./FindLatestSlackVersion')(args);
     slackPath = join(slackPath, 'resources');
     const cssFile = join(slackPath, 'CustomTheme.css');
     const localFile = './dist/custom.css';

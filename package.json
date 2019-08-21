@@ -45,7 +45,8 @@
   },
   "pkg": {
     "assets": [
-      "./release-updater/updater.exe"
+      "./release-updater/updater.exe",
+      "./src/js/patch/SlackPatch.js"
     ]
   }
 }

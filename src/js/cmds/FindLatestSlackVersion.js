@@ -15,5 +15,6 @@ module.exports = (args) => {
     slackPath = join(slackPath, `app-${latestVersion}`);
 
     console.log(`Latest slack version folder: ${slackPath}`);
+    args.slackPath = slackPath;
     return slackPath;
 };

@@ -2029,3 +2029,14 @@ text.p-classic_nav__team_messages_progress_bar_text {
 .p-shared_channels_team_menu_item__label--new {
     background-color: var(--background-hover);
 }
+
+/* Keyboard shortcuts */
+.p-shortcuts_flexpane__shortcut_title {
+    color: var(--text);
+}
+.c-link--button {
+    color: var(--text-special);
+}
+.p-shortcuts_flexpane__shortcut_heading {
+    color: var(--text-secondary);
+}
