@@ -1335,7 +1335,7 @@ hr.c-menu_separator__separator {
 .c-menu_item__icon {
     color: var(--background-light);
 }
-.c-icon {
+.c-icon { 
     color: var(--text);
 }
 /* sidebar in general */
@@ -1870,7 +1870,11 @@ ts-jumper .p-jumper__help {
 .p-channel_sidebar__close_container .p-channel_sidebar__channel--im .c-presence--active,
 .p-channel_sidebar__close_container .p-channel_sidebar__channel--im-slackbot:before,
 .c-unified_member .presence.active,
-#team_menu #presence_container #presence.active:before { color: #64e88e; }
+.c-presence--active,
+#team_menu #presence_container #presence.active:before,
+.p-classic_nav__team_header__user .p-classic_nav__team_header__user__presence.c-presence--active { 
+    color: #64e88e; 
+}
 
 /** Slack 4 **/
 strong {
@@ -2039,4 +2043,14 @@ text.p-classic_nav__team_messages_progress_bar_text {
 }
 .p-shortcuts_flexpane__shortcut_heading {
     color: var(--text-secondary);
+}
+
+/* Workspace sidebar */
+.p-client__team_sidebar.p-team_sidebar.p-team_sidebar--classic_nav, button.p-team_sidebar__add_button {
+	background-color: var(--background-elevated);
+}
+
+/* Input field focus */
+.p-workspace__input .p-message_input_field.focus {
+    border-color: var(--border-dim);
 }
