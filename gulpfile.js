@@ -45,7 +45,7 @@ function lint() {
 }
 
 function cssLint() {
-    return src([config.paths.cssFiles], {since: lastRun(cssLint) + 1000})
+    return src([config.paths.cssFiles]) //, {since: lastRun(cssLint) + 1000})
         //TODO - fix ;(
         //.pipe(gulpStylelint({fix: true, reporters: [{formatter: 'string', console: true}]}))
         //.pipe(dest('./src/css/'))
@@ -129,8 +129,7 @@ async function updateCSS() {
 }
 
 function watcher() {
-    watch([config.paths.cssFiles], cssLint);
-    watch([config.paths.output], updateCSS);
+    watch([config.paths.cssFiles], series(cssLint, updateCSS));
     watch([config.paths.gulpFile, config.paths.jsFiles], lint);
 }
 
