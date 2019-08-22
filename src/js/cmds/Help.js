@@ -16,7 +16,7 @@ Options:
   uninstall                       Uninstall the Slack patch
   updatecss                       Update CSS with latest fixes
   update                          Update this exe to the latest version
-  version                         Show package version
+  version                         Show version
   help [command]                  Show help menu for a command`,
 
     install: `

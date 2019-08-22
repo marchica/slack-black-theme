@@ -1,7 +1,7 @@
 const exec = require('child_process').execFile;
 const { join } = require('path');
 
-module.exports = (args) => {
+module.exports = async (args) => {
     const slackBasePath = require('./FindSlackInstall')(args);
 
     if (!slackBasePath) {

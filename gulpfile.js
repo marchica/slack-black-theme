@@ -52,24 +52,21 @@ function cssLint() {
         .pipe(dest(config.paths.output));
 }
 
-async function launchSlack(cb) {
+async function launchSlack() {
     log.info('Launching Slack in developer mode');
-    require('./src/js/cmds/LaunchSlack')(minimist([])); //TODO - not sure this ever completes
-    cb();
+    await require('./src/js/cmds/LaunchSlack')(minimist([])); //TODO - not sure this ever completes
     log.info(c.bold.magenta('** Ctrl-Alt-I to open dev tools in Slack **'));
     log.info(c.bold.magenta('** Ctrl-R to refresh Slack after CSS changes **'));
 }
 
-function installSlackPatch(cb) {
+async function installSlackPatch() {
     log.info('Installing Slack patch');
-    require('./src/js/cmds/InstallSlackPatch')(minimist(['--devMode']));
-    cb(); //TODO - cb happens before it finishes...
+    await require('./src/js/cmds/InstallSlackPatch')(minimist(['--devMode']));
 }
 
-function uninstallSlackPatch(cb) {
+async function uninstallSlackPatch() {
     log.info('Uninstalling Slack patch');
-    require('./src/js/cmds/UninstallSlackPatch')(minimist([]));
-    cb();
+    await require('./src/js/cmds/UninstallSlackPatch')(minimist([]));
 }
 
 async function createExecutables() {

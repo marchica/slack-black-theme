@@ -2,10 +2,10 @@
 
 const minimist = require('minimist');
 
-module.exports = (cb) => {
+module.exports = async () => {
     const args = minimist(process.argv.slice(2));
 
-    let cmd = args._[0] || 'help';
+    let cmd = args._[0] || '';
 
     if (args.version || args.v) {
         cmd = 'version';
@@ -25,25 +25,26 @@ module.exports = (cb) => {
         break;
 
     case 'launchslack':
-        require('./cmds/LaunchSlack')(args);
+        await require('./cmds/LaunchSlack')(args);
         break;
 
     case 'updatecss':
-        require('./cmds/UpdateCSS')(args);
+        await require('./cmds/UpdateCSS')(args);
         break;
 
     case 'installslackpatch':
     case 'install':
-        require('./cmds/InstallSlackPatch')(args);
+    case '':
+        await require('./cmds/InstallSlackPatch')(args);
         break;
 
     case 'uninstallslackpatch':
     case 'uninstall':
-        require('./cmds/UninstallSlackPatch')(args);
+        await require('./cmds/UninstallSlackPatch')(args);
         break;
 
     case 'update':
-        require('./cmds/Update')(args);
+        await require('./cmds/Update')(args);
         break;
 
     case 'version':
@@ -60,7 +61,14 @@ module.exports = (cb) => {
         break;
     }
 
-    if (cb) cb();
+    // On Windows, title is set when exe launched from explorer
+    // So if launched from explorer, keep the window open
+    if (cmd === '' && process.title.trim()) {
+        console.log('Press any key to exit...');
+        process.stdin.setRawMode(true);
+        process.stdin.resume();
+        process.stdin.on('data', process.exit.bind(process, 0));
+    }
 };
 
 //TODO - console.log vs process.stdout.write ?
