@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const https = require('https');
 const { join } = require('path');
+const { name } = require('../../package.json');
 
 const fileExists = async function(file) {
     try {
@@ -53,6 +54,10 @@ const downloadFile = function(url) {
     });
 };
 
+const os = process.platform === 'win32' ? 'win.exe' : process.platform === 'darwin' ? 'macos' : 'linux';
+const exeName = `${name}-${os}`;
+
 exports.fileExists = fileExists;
 exports.removeDir = removeDir;
 exports.downloadFile = downloadFile;
+exports.exeName = exeName;

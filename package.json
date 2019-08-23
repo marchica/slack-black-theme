@@ -1,6 +1,6 @@
 {
   "name": "slack-patcher",
-  "version": "4.0.1-0",
+  "version": "4.0.2-0",
   "description": "A dark theme installer for Slack based on Visual Studio's dark theme",
   "main": "./src/js/SlackPatcher.js",
   "scripts": {

@@ -4,7 +4,7 @@
 
 A dark theme for [Slack](https://slack.com/) **_4.0+_** with an easy installer for Windows users!
 
-<p align="center"><a href="https://github.com/marchica/slack-black-theme/releases/latest"><img src="https://raw.githubusercontent.com/marchica/slack-black-theme/dev/resources/download-button.png" /></a></p>
+<p align="center"><a href="https://github.com/marchica/slack-black-theme/releases/latest"><img src="https://raw.githubusercontent.com/marchica/slack-black-theme/master/resources/download-button.png" /></a></p>
 
 ![image](https://user-images.githubusercontent.com/141490/57653431-c8c34100-759f-11e9-8e6a-aec8df7de6f3.png)
 

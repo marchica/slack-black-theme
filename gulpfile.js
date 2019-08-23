@@ -101,8 +101,8 @@ async function createUpdaterExecutables() {
 
 async function exe() {
     args.win = true;
-    await createExecutables();
     await createUpdaterExecutables();
+    await createExecutables();
 }
 
 function versionBump() {
@@ -131,7 +131,7 @@ function watcher() {
 }
 
 function clean() {
-    return del([config.paths.output, config.paths.exes]);
+    return del([config.paths.output, config.paths.exes, config.paths.updaterExes]);
 }
 
 function build() { //TODO - should this build exes?

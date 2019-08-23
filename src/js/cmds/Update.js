@@ -16,12 +16,11 @@ module.exports = async () => {
 
     // Check for new version
     let latestVersion = JSON.parse(await downloadFile('https://raw.githubusercontent.com/marchica/slack-black-theme/master/package.json')).version;
-
     console.log(`Latest version: ${latestVersion}`);
 
     // If new version, download updater.exe to tmp folder
     if (semver.gt(latestVersion, version)) {
-        console.log('Updating...'); //TODO - take out if figure out stdio pipe
+        console.log('Updating...');
 
         let updaterPath = path.join(__dirname, '../../../release-updater/updater.exe');
 
@@ -33,10 +32,11 @@ module.exports = async () => {
         // await fs.chmod(target, 0o765); //TODO - need to grant execute permission?
 
         // Run updater.exe and pass exec location
-        let out = fs.openSync('./out.log', 'a'), //TODO - move to tmp?
-            err = fs.openSync('./out.log', 'a');
+        let logFile = tmp.fileSync({ prefix: 'slackpatcherupdate-', postfix: '.log'}).name;
+        let out = fs.openSync(logFile, 'a'),
+            err = fs.openSync(logFile, 'a');
 
-        spawn(target, [`--execPath=${execPath}`], {
+        spawn(target, [`--execPath=${execPath}`, `--version=${latestVersion}`], {
             stdio: ['ignore', out, err],
             detached: true
         }).unref();

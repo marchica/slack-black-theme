@@ -1,7 +1,5 @@
 const { version, name, author, description } = require('../../../package.json');
-
-const os = process.platform === 'win32' ? 'win.exe' : process.platform === 'darwin' ? 'macos' : 'linux';
-const exeName = `${name}-${os}`;
+const { exeName } = require('../Utils');
 
 const menus = {
     main: `

@@ -7,7 +7,7 @@ window.addEventListener('load', function() {
             .forEach(function(i) {
                 i.style['background-color'] = null;
             });
-    }, 1000); //TODO - test time?
+    }, 1000);
 });
 document.addEventListener('DOMContentLoaded', function() {
     fs.readFile(cssPath, function(err, css) {
